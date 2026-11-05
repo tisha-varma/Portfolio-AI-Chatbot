@@ -1,0 +1,150 @@
+{
+  "identity": {
+    "name": "PLACEHOLDER: Tisha",
+    "college": "PLACEHOLDER: Example Institute of Technology",
+    "degree": "PLACEHOLDER: B.Tech",
+    "branch": "PLACEHOLDER: Computer Science and Engineering",
+    "expected_graduation": "PLACEHOLDER: May 2027",
+    "location": "PLACEHOLDER: Pune, India",
+    "one_line_pitch": "PLACEHOLDER: Third-year CSE student who builds small, working AI and web projects."
+  },
+  "education": {
+    "cgpa": "PLACEHOLDER: 8.40",
+    "semester": "PLACEHOLDER: 5",
+    "scale": "PLACEHOLDER: 10",
+    "coursework": [
+      "PLACEHOLDER: Data Structures and Algorithms",
+      "PLACEHOLDER: Database Management Systems",
+      "PLACEHOLDER: Operating Systems",
+      "PLACEHOLDER: Computer Networks"
+    ]
+  },
+  "skills": {
+    "strong": [
+      "PLACEHOLDER: Python",
+      "PLACEHOLDER: SQL",
+      "PLACEHOLDER: Git"
+    ],
+    "working_knowledge": [
+      "PLACEHOLDER: FastAPI",
+      "PLACEHOLDER: React",
+      "PLACEHOLDER: Docker"
+    ],
+    "familiar": [
+      "PLACEHOLDER: PostgreSQL",
+      "PLACEHOLDER: Pandas",
+      "PLACEHOLDER: Linux"
+    ],
+    "not_experienced": [
+      "PLACEHOLDER: Kubernetes",
+      "PLACEHOLDER: Rust",
+      "PLACEHOLDER: Go",
+      "PLACEHOLDER: Production MLOps"
+    ]
+  },
+  "projects": [
+    {
+      "name": "PLACEHOLDER: Project Alpha",
+      "one_line_summary": "PLACEHOLDER: A small web app that summarises long documents.",
+      "problem": "PLACEHOLDER: Reading long reports takes too much time during exam weeks.",
+      "my_role": "PLACEHOLDER: Sole developer; designed the UI, backend, and evaluation script.",
+      "tech_stack": [
+        "PLACEHOLDER: Python",
+        "PLACEHOLDER: FastAPI",
+        "PLACEHOLDER: React"
+      ],
+      "outcome": "PLACEHOLDER: Cut a 20-page document down to a 1-page summary in testing.",
+      "links": {
+        "github": "PLACEHOLDER: https://github.com/placeholder/project-alpha",
+        "demo": "PLACEHOLDER: https://example.com/project-alpha"
+      },
+      "status": "PLACEHOLDER: Completed coursework project"
+    },
+    {
+      "name": "PLACEHOLDER: Project Beta",
+      "one_line_summary": "PLACEHOLDER: A CLI tool that tracks campus bus timings.",
+      "problem": "PLACEHOLDER: Students cannot tell when the next campus bus arrives.",
+      "my_role": "PLACEHOLDER: Backend developer in a team of three; wrote the scraper and API.",
+      "tech_stack": [
+        "PLACEHOLDER: Python",
+        "PLACEHOLDER: SQLite"
+      ],
+      "outcome": "PLACEHOLDER: Used by about 30 classmates during a two-week pilot.",
+      "links": {
+        "github": "PLACEHOLDER: https://github.com/placeholder/project-beta",
+        "demo": "PLACEHOLDER: none"
+      },
+      "status": "PLACEHOLDER: In progress"
+    }
+  ],
+  "experience": [
+    {
+      "role": "PLACEHOLDER: Backend Intern",
+      "organisation": "PLACEHOLDER: Example Software Pvt. Ltd.",
+      "type": "PLACEHOLDER: Summer internship",
+      "duration": "PLACEHOLDER: May 2025 - July 2025",
+      "highlights": [
+        "PLACEHOLDER: Added pagination to an internal reporting API.",
+        "PLACEHOLDER: Wrote 25 automated tests for an existing endpoint."
+      ]
+    }
+  ],
+  "achievements": [
+    "PLACEHOLDER: Winner, Example College Hackathon 2025",
+    "PLACEHOLDER: Top 10 percent in a national coding contest"
+  ],
+  "certifications": [
+    {
+      "name": "PLACEHOLDER: Introduction to Databases",
+      "issuer": "PLACEHOLDER: Example Learning Platform",
+      "year": "PLACEHOLDER: 2025",
+      "link": "PLACEHOLDER: https://example.com/certificate/placeholder"
+    }
+  ],
+  "interests": [
+    "PLACEHOLDER: Applied AI",
+    "PLACEHOLDER: Developer tooling",
+    "PLACEHOLDER: Technical writing"
+  ],
+  "availability": {
+    "status": "PLACEHOLDER: Open to summer 2026 internships",
+    "notice_period": "PLACEHOLDER: None for internships; 4 weeks for full-time roles",
+    "locations": [
+      "PLACEHOLDER: Remote",
+      "PLACEHOLDER: Pune",
+      "PLACEHOLDER: Bengaluru"
+    ],
+    "work_modes": [
+      "PLACEHOLDER: Remote",
+      "PLACEHOLDER: Hybrid"
+    ],
+    "roles_seeking": [
+      "PLACEHOLDER: Backend engineering intern",
+      "PLACEHOLDER: AI engineering intern"
+    ]
+  },
+  "contact": {
+    "public_contact_only": [
+      "PLACEHOLDER: email: tisha.placeholder@example.com",
+      "PLACEHOLDER: linkedin: https://linkedin.com/in/placeholder",
+      "PLACEHOLDER: github: https://github.com/placeholder"
+    ]
+  },
+  "private_do_not_share": [
+    "phone_number",
+    "personal_email",
+    "home_address",
+    "exact_date_of_birth",
+    "government_id_numbers",
+    "family_details",
+    "salary_expectations",
+    "offer_letters",
+    "internal_referral_contacts"
+  ],
+  "known_gaps": [
+    "PLACEHOLDER: No full-time professional experience yet.",
+    "PLACEHOLDER: No production Kubernetes or cloud deployment experience.",
+    "PLACEHOLDER: No published research papers.",
+    "PLACEHOLDER: Limited experience with large-scale distributed systems."
+  ]
+}

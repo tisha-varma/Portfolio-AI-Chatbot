@@ -1,0 +1,9 @@
+# Used on this phase (config + prompt/knowledge loading + tests)
+pydantic-settings>=2.3,<3
+python-dotenv>=1.0,<2
+pytest>=8.0,<9
+
+# Listed for later phases. Installed but unused for now.
+fastapi>=0.110,<1
+uvicorn[standard]>=0.29,<1
+groq>=0.9,<1
