@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr, ValidationError, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -38,6 +39,16 @@ class Settings(BaseSettings):
     max_message_chars: int = Field(default=1500, gt=0, description="Maximum user message length.")
     contact_email: str = Field(min_length=3, description="Public contact email shown to visitors.")
     owner_name: str = Field(default="Tisha", min_length=1, description="Name used in the prompt.")
+    environment: Literal["development", "production"] = Field(
+        default="development",
+        description="Deployment stage; production rejects placeholder knowledge.",
+    )
+
+    @field_validator("environment", mode="before")
+    @classmethod
+    def _normalise_environment(cls, value: object) -> str:
+        """Accept case-insensitive ENVIRONMENT values."""
+        return str(value).strip().lower()
 
     @field_validator("groq_model", "contact_email", "owner_name", mode="after")
     @classmethod

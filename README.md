@@ -100,32 +100,44 @@ python -m pytest backend -q
 1. reads `prompts/system_prompt.md`
 2. reads and parses `knowledge/profile.json` (invalid JSON raises
    `ProfileParseError` with the line and column)
-3. pretty-prints the profile with `json.dumps(..., indent=2)` and injects it
-   into `{{KNOWLEDGE_BASE}}`
-4. fills `{{OWNER_NAME}}` and `{{CONTACT_EMAIL}}` from settings
-5. raises `PromptBuildError` if any `{{PLACEHOLDER}}` is unknown or left over
-6. logs a warning, via `logging` (not `print`), when the knowledge base still
-   contains `PLACEHOLDER:` text
+3. validates required sections and shapes with pydantic
+   (`ProfileValidationError`, e.g. "profile.json is missing required
+   section(s): known_gaps"). In `ENVIRONMENT=production`, empty `projects` or
+   `skills` is rejected too
+4. serialises the profile as compact JSON (`separators=(",", ":")`, no indent)
+   to keep prompt tokens low, then injects it into `{{KNOWLEDGE_BASE}}`
+5. fills `{{OWNER_NAME}}` and `{{CONTACT_EMAIL}}` from settings
+6. raises `PromptBuildError` if the template uses an unknown placeholder.
+   Substitution is single-pass, so braces inside project descriptions are safe
+7. logs a warning, via `logging` (not `print`), when the knowledge base still
+   contains `PLACEHOLDER:` text — and raises instead when
+   `ENVIRONMENT=production`
 
-The finished prompt is cached in memory per template/knowledge pair. During
-development, call `reload_system_prompt()` (or `clear_prompt_cache()`) to pick
-up edits without restarting the process:
+The finished prompt is cached in memory. The cache key includes both file
+modification times plus `OWNER_NAME`, `CONTACT_EMAIL`, and `ENVIRONMENT`, so
+editing the template or profile is picked up on the next build without a
+restart. During development you can still force a rebuild:
 
 ```python
 from app.prompt_builder import build_system_prompt, reload_system_prompt
 
-prompt = build_system_prompt()          # cached
-prompt = reload_system_prompt()         # re-reads files, re-caches
+prompt = build_system_prompt()          # cached per file mtime + settings
+prompt = reload_system_prompt()         # clears cache, re-reads files
 ```
 
 Tests and tooling can bypass the cache with `build_system_prompt(use_cache=False)`
-and can pass explicit `prompt_path`, `profile_path`, and `settings`.
+and can pass explicit `prompt_path`, `profile_path`, and `settings`. Each build
+logs its size and a rough token estimate (characters / 4).
 
 ## Replacing the placeholder data
 
 Every fake value in `backend/knowledge/profile.json` starts with `PLACEHOLDER:`.
 Search for that string and replace values section by section. Keep the section
 names and the `private_do_not_share` list intact: the prompt relies on them.
+
+While `ENVIRONMENT=development`, leftover placeholders only produce a warning.
+Set `ENVIRONMENT=production` before deploying: the prompt builder then refuses
+to start until every placeholder is replaced and `projects`/`skills` are filled.
 
 `backend/prompts/system_prompt.md` and `backend/tests/honesty_questions.md` are
 working drafts. Replace them with the final reviewed text before launch; the
@@ -143,6 +155,7 @@ prompt must keep the three placeholders (`{{OWNER_NAME}}`, `{{CONTACT_EMAIL}}`,
 | `MAX_MESSAGE_CHARS` | no | 1500 | Single message length limit |
 | `CONTACT_EMAIL` | yes | - | Only contact detail the bot may share |
 | `OWNER_NAME` | no | `Tisha` | Name injected into the prompt |
+| `ENVIRONMENT` | no | `development` | `production` rejects placeholder knowledge and empty projects/skills |
 
 ## Next phases (not implemented here)
 

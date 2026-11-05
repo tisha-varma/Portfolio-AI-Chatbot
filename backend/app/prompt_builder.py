@@ -9,6 +9,8 @@ import threading
 from pathlib import Path
 from typing import Any, Mapping
 
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
 from app.config import Settings, get_settings
 
 logger = logging.getLogger(__name__)
@@ -20,7 +22,20 @@ DEFAULT_PROFILE_PATH: Path = BACKEND_DIR / "knowledge" / "profile.json"
 PLACEHOLDER_PATTERN = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
 PLACEHOLDER_MARKER = "PLACEHOLDER:"
 
-_CACHE: dict[tuple[Path, Path], str] = {}
+REQUIRED_PROFILE_SECTIONS: tuple[str, ...] = (
+    "identity",
+    "education",
+    "skills",
+    "projects",
+    "contact",
+    "private_do_not_share",
+    "known_gaps",
+)
+
+# (template path, profile path, both mtimes, owner, email, environment)
+CacheKey = tuple[Path, Path, int, int, str, str, str]
+
+_CACHE: dict[CacheKey, str] = {}
 _CACHE_LOCK = threading.Lock()
 
 
@@ -29,7 +44,80 @@ class PromptBuildError(RuntimeError):
 
 
 class ProfileParseError(PromptBuildError):
-    """Raised when knowledge/profile.json is missing or not valid JSON."""
+    """Raised when knowledge/profile.json is not valid JSON."""
+
+
+class ProfileValidationError(PromptBuildError):
+    """Raised when knowledge/profile.json is missing required structure."""
+
+
+class ProfileIdentity(BaseModel):
+    """Minimal identity facts the prompt relies on."""
+
+    model_config = ConfigDict(extra="allow")
+
+    name: str
+    college: str
+    degree: str
+    branch: str
+    expected_graduation: str
+
+
+class ProfileSkills(BaseModel):
+    """Skill levels, from strongest to not experienced."""
+
+    model_config = ConfigDict(extra="allow")
+
+    strong: list[str] = Field(default_factory=list)
+    working_knowledge: list[str] = Field(default_factory=list)
+    familiar: list[str] = Field(default_factory=list)
+    not_experienced: list[str] = Field(default_factory=list)
+
+
+class ProfileProject(BaseModel):
+    """A project entry; extra fields such as outcome and links are kept."""
+
+    model_config = ConfigDict(extra="allow")
+
+    name: str
+    one_line_summary: str
+    tech_stack: list[str] = Field(default_factory=list)
+    status: str
+
+
+class ProfileContact(BaseModel):
+    """The only contact details the bot may share."""
+
+    model_config = ConfigDict(extra="allow")
+
+    public_contact_only: list[str]
+
+
+class Profile(BaseModel):
+    """Validated shape of the knowledge base."""
+
+    model_config = ConfigDict(extra="allow")
+
+    identity: ProfileIdentity
+    education: dict[str, Any]
+    skills: ProfileSkills
+    projects: list[ProfileProject]
+    experience: list[Any] = Field(default_factory=list)
+    achievements: list[str] = Field(default_factory=list)
+    certifications: list[Any] = Field(default_factory=list)
+    interests: list[str] = Field(default_factory=list)
+    availability: dict[str, Any] = Field(default_factory=dict)
+    contact: ProfileContact
+    private_do_not_share: list[str]
+    known_gaps: list[str]
+
+    @property
+    def has_any_skill(self) -> bool:
+        """Return True when at least one skill is recorded at any level."""
+        return any(
+            (self.skills.strong, self.skills.working_knowledge,
+             self.skills.familiar, self.skills.not_experienced)
+        )
 
 
 def load_template(path: str | Path = DEFAULT_PROMPT_PATH) -> str:
@@ -64,25 +152,82 @@ def load_profile(path: str | Path = DEFAULT_PROFILE_PATH) -> dict[str, Any]:
     return data
 
 
+def validate_profile(data: dict[str, Any], *, environment: str = "development") -> Profile:
+    """Validate required sections, then apply production-only checks.
+
+    Raises:
+        ProfileValidationError: If a section is missing, malformed, or empty
+            where production requires content.
+    """
+    missing = [section for section in REQUIRED_PROFILE_SECTIONS if section not in data]
+    if missing:
+        raise ProfileValidationError(
+            f"profile.json is missing required section(s): {', '.join(missing)}"
+        )
+
+    try:
+        profile = Profile.model_validate(data)
+    except ValidationError as exc:
+        details = "; ".join(
+            f"{'.'.join(str(part) for part in error['loc'])}: {error['msg']}"
+            for error in exc.errors()
+        )
+        raise ProfileValidationError(f"profile.json is invalid: {details}") from exc
+
+    if environment == "production":
+        if not profile.projects:
+            raise ProfileValidationError(
+                "profile.json has no projects, which production requires."
+            )
+        if not profile.has_any_skill:
+            raise ProfileValidationError(
+                "profile.json has no skills recorded, which production requires."
+            )
+    return profile
+
+
 def find_placeholders(text: str) -> list[str]:
     """Return the distinct placeholder names used in a template, sorted."""
     return sorted({match.group(1) for match in PLACEHOLDER_PATTERN.finditer(text)})
 
 
 def render_template(template: str, values: Mapping[str, str]) -> str:
-    """Replace {{PLACEHOLDER}} tokens and fail on unknown or leftover placeholders."""
+    """Replace {{PLACEHOLDER}} tokens, failing on unknown placeholders.
+
+    Substitution is single-pass, so braces inside the injected knowledge base
+    are left untouched and can never be re-substituted.
+    """
     missing = [name for name in find_placeholders(template) if name not in values]
     if missing:
         formatted = ", ".join(f"{{{{{name}}}}}" for name in missing)
         raise PromptBuildError(f"No value provided for placeholder(s): {formatted}")
 
-    rendered = PLACEHOLDER_PATTERN.sub(lambda match: values[match.group(1)], template)
+    return PLACEHOLDER_PATTERN.sub(lambda match: values[match.group(1)], template)
 
-    leftover = find_placeholders(rendered)
-    if leftover:
-        formatted = ", ".join(f"{{{{{name}}}}}" for name in leftover)
-        raise PromptBuildError(f"Placeholder(s) still unfilled after rendering: {formatted}")
-    return rendered
+
+def _file_stamp(path: Path) -> int:
+    """Return a file's modification time in nanoseconds, or -1 if missing."""
+    try:
+        return path.stat().st_mtime_ns
+    except OSError:
+        return -1
+
+
+def _cache_key(
+    prompt_path: Path,
+    profile_path: Path,
+    settings: Settings,
+) -> CacheKey:
+    """Build a cache key from paths, file mtimes, and prompt-affecting settings."""
+    return (
+        prompt_path.resolve(),
+        profile_path.resolve(),
+        _file_stamp(prompt_path),
+        _file_stamp(profile_path),
+        settings.owner_name,
+        settings.contact_email,
+        settings.environment,
+    )
 
 
 def _render_from_files(
@@ -90,15 +235,22 @@ def _render_from_files(
     profile_path: Path,
     settings: Settings,
 ) -> str:
-    """Load both files and render the final prompt."""
+    """Load both files, validate the profile, and render the final prompt."""
     template = load_template(prompt_path)
-    profile = load_profile(profile_path)
-    knowledge_base = json.dumps(profile, indent=2, ensure_ascii=False)
+    profile_data = load_profile(profile_path)
+    validate_profile(profile_data, environment=settings.environment)
+
+    knowledge_base = json.dumps(profile_data, ensure_ascii=False, separators=(",", ":"))
 
     if PLACEHOLDER_MARKER in knowledge_base:
+        if settings.environment == "production":
+            raise ProfileValidationError(
+                "Knowledge base still contains PLACEHOLDER: values but ENVIRONMENT=production. "
+                "Replace every placeholder in knowledge/profile.json before deploying."
+            )
         logger.warning(
             "Knowledge base %s still contains %r values; replace them with real data "
-            "before exposing the chatbot publicly.",
+            "before deploying.",
             profile_path,
             PLACEHOLDER_MARKER,
         )
@@ -111,11 +263,6 @@ def _render_from_files(
     return render_template(template, values)
 
 
-def _cache_key(prompt_path: Path, profile_path: Path) -> tuple[Path, Path]:
-    """Build a stable cache key for a template/knowledge pair."""
-    return prompt_path.resolve(), profile_path.resolve()
-
-
 def build_system_prompt(
     *,
     prompt_path: str | Path | None = None,
@@ -123,7 +270,10 @@ def build_system_prompt(
     settings: Settings | None = None,
     use_cache: bool = True,
 ) -> str:
-    """Build the system prompt, optionally reusing the in-memory cache.
+    """Build the system prompt, reusing the cache when nothing has changed.
+
+    The cache key covers both file mtimes and the settings that appear in the
+    prompt, so edits and config changes are picked up without a restart.
 
     Args:
         prompt_path: Override for the Markdown template location.
@@ -132,11 +282,13 @@ def build_system_prompt(
         use_cache: Set False to force a fresh read (tests, tooling).
 
     Raises:
-        PromptBuildError: On missing files, missing placeholders, or invalid JSON.
+        PromptBuildError: On missing files, unknown placeholders, invalid JSON,
+            or an invalid profile.
     """
     template_path = Path(prompt_path) if prompt_path is not None else DEFAULT_PROMPT_PATH
     knowledge_path = Path(profile_path) if profile_path is not None else DEFAULT_PROFILE_PATH
-    key = _cache_key(template_path, knowledge_path)
+    resolved_settings = settings if settings is not None else get_settings()
+    key = _cache_key(template_path, knowledge_path, resolved_settings)
 
     if use_cache:
         with _CACHE_LOCK:
@@ -144,10 +296,11 @@ def build_system_prompt(
         if cached is not None:
             return cached
 
-    prompt = _render_from_files(
-        template_path,
-        knowledge_path,
-        settings if settings is not None else get_settings(),
+    prompt = _render_from_files(template_path, knowledge_path, resolved_settings)
+    logger.info(
+        "Built system prompt (%d chars, roughly %d tokens).",
+        len(prompt),
+        len(prompt) // 4,
     )
 
     if use_cache:
