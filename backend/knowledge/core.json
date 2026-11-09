@@ -1,0 +1,216 @@
+{
+  "identity": {
+    "name": "Tisha Varma",
+    "pronouns": "she/her",
+    "location": "Ahmedabad, Gujarat, India",
+    "public_contact": {
+      "email": "varmatisha0@gmail.com",
+      "github": "https://github.com/tisha-varma",
+      "linkedin": "https://www.linkedin.com/in/tisha-varma/",
+      "leetcode": "https://leetcode.com/u/_tisha_2810"
+    }
+  },
+  "summary": "Tisha Varma is a final-year B.E. Information Technology student (graduating June 2027) at L.D. College of Engineering, Ahmedabad. She works as a backend and full-stack Python engineer with applied-AI experience in LLMs, RAG and agentic systems. She takes ideas from a problem statement to a working product: the AI layer, backend architecture, APIs, database, authentication, deployment and a usable interface. She has three internships, an open-source contribution to INCF's Knowledge-Space AI Agent, a founder role in the SSIP Gujarat-supported women's-safety initiative HerDefenders, 2nd place at HackSprint 2026, and 250+ DSA problems solved.",
+  "career_goals": [
+    "Seeking a 4-6 month internship in backend or applied-AI engineering, ideally starting between January and June 2027, converting to a pre-placement offer, then an entry-level SDE / AI engineer role.",
+    "Target roles: Backend Engineer (Python); AI/LLM Application Engineer; Full-Stack Engineer (backend-leaning); SDE-1; Agentic AI / GenAI Developer.",
+    "Target industries: fintech and payments, AI startups, product companies. Preferred cities: Bengaluru, Hyderabad, Pune, Mumbai; on-site, hybrid or remote."
+  ],
+  "education": {
+    "b_e": {
+      "degree": "B.E. Information Technology",
+      "institution": "L.D. College of Engineering (LDCE), Ahmedabad (GTU)",
+      "dates": "2024 - June 2027",
+      "cpi": "9.01 / 10 so far"
+    },
+    "diploma": {
+      "degree": "Diploma in Information Technology",
+      "institution": "Government Girls Polytechnic (GPG), Ahmedabad (GTU)",
+      "dates": "2021 - 2024",
+      "cpi": "9.68 / 10",
+      "note": "SPI 10 in the final listed semester."
+    },
+    "ssc": {"school": "St. Blaze School, GSEB", "year": "2020", "percentage": "87%"},
+    "ddcet": {
+      "exam": "DDCET 2024 (ACPC Gujarat diploma-to-degree test)",
+      "rank": "Gujarat Rank 9",
+      "marks": "178.5",
+      "stream": "Engineering and Technology"
+    },
+    "certificates": [
+      "5-Day AI Agents Intensive Course with Google (Kaggle x Google), badge 18 Dec 2025.",
+      "Google Cloud Study Jam 2025 (20 Oct - 19 Nov 2025); one of the first 50 Cloud Completers from LDCE.",
+      "Course: DSA - Code and Debug.",
+      "Flutter developer internship certificate (Elsner Technologies, 2022)."
+    ]
+  },
+  "full_time_employment": "None.",
+  "experience": [
+    {
+      "role": "Data Analyst and Machine Learning Intern",
+      "organisation": "InfoLabz",
+      "dates": "Jul 2026 - Aug 2026",
+      "details": ["ML workflow on a customer-analytics use case; interactive Streamlit app. Tools: Python, Pandas, NumPy, Scikit-learn, Matplotlib, Streamlit, Joblib."]
+    },
+    {
+      "role": "Open Source Contributor",
+      "organisation": "INCF Knowledge-Space AI Agent",
+      "dates": "Dec 2025 - Mar 2026",
+      "details": ["Issue -> branch -> PR -> review -> fix in a Python/LLM codebase. 1 merged PR, 1 approved, 2 open, 1 closed duplicate (6 Nov 2026)."]
+    },
+    {
+      "role": "Machine Learning Intern",
+      "organisation": "InfoLabz IT Services Pvt. Ltd.",
+      "dates": "Jul 2023 - Sep 2023",
+      "details": ["ML algorithms, preprocessing, model training and prediction in Python; OpenCV for image processing."]
+    },
+    {
+      "role": "Flutter Developer Intern",
+      "organisation": "Elsner Technologies Pvt. Ltd.",
+      "dates": "May 2022 - Jun 2022",
+      "details": ["Two-month Flutter mobile-development internship (certificate on LinkedIn)."]
+    },
+    {
+      "role": "Founder",
+      "organisation": "HerDefenders",
+      "dates": "2025",
+      "details": ["CCTV pose detection with MediaPipe and OpenCV; SSIP Gujarat approved and funded. Not active; code not public."]
+    }
+  ],
+  "projects": [
+    {
+      "name": "RazorFlow AI",
+      "one_line_summary": "Agentic commerce and payments platform; AI recommends, a human approves, the system verifies.",
+      "my_role": "Built solo for the Razorpay Buildathon, Track 01.",
+      "tech_stack": ["Python", "FastAPI", "SQLAlchemy", "SQLite", "Razorpay", "Groq/Gemini/Ollama", "Next.js"],
+      "status": "Public repo, master branch; Razorpay test mode.",
+      "links": {"github": "https://github.com/tisha-varma/RazorFlow-AI"},
+      "key_facts": ["181 pytest tests; 12 session states; about 40 REST endpoints, 10 routers and 13 tables"],
+      "deep_dive_id": "razorflow_ai"
+    },
+    {
+      "name": "Career Copilot AI",
+      "one_line_summary": "Resume auditing, interview prep and AI asset generation.",
+      "my_role": "Not stated in source; repo and live app listed.",
+      "tech_stack": ["Python", "FastAPI", "Firebase", "Firestore", "ChromaDB", "LLaMA via Groq", "Render"],
+      "status": "Public repo, MIT license, 51 commits; live on Render.",
+      "links": {"github": "https://github.com/tisha-varma/Career-Copilot", "live": "https://career-copilot-wbkk.onrender.com/"},
+      "key_facts": ["18 users, 31 resumes and 11 feedback entries (7 Nov 2026); 12+ roles benchmarked with LLaMA 3.3 via Groq"],
+      "deep_dive_id": "career_copilot"
+    },
+    {
+      "name": "Amazon Video Games Explainable Recommendation System",
+      "one_line_summary": "Compares SVD, KNN and NMF with a reason for every recommendation.",
+      "my_role": "Not stated in source; repo and live demo listed.",
+      "tech_stack": ["Python", "scikit-surprise", "pandas", "Streamlit"],
+      "status": "Public repo, 16 commits; live Streamlit demo.",
+      "links": {"github": "https://github.com/tisha-varma/Amazon-Recommendation-System", "live": "https://amazon-recommendation-system-games.streamlit.app/"},
+      "key_facts": ["128,687 interactions; SVD RMSE 1.1911, KNN P@10 0.2004, NMF R@10 0.7642"],
+      "deep_dive_id": "amazon_recommender"
+    },
+    {
+      "name": "PharmaMate",
+      "one_line_summary": "Matches orders against handwritten prescriptions and suggests alternatives.",
+      "my_role": "Built solo.",
+      "tech_stack": ["Python", "Tkinter", "Pandas", "Gemini API"],
+      "status": "Public repo, 7 commits; Google Girl Hackathon 2025 finalist.",
+      "links": {"github": "https://github.com/tisha-varma/PharmaMate"},
+      "key_facts": ["Gemini reads prescription images directly; no separate OCR library"],
+      "deep_dive_id": "pharmamate"
+    },
+    {
+      "name": "AI Study Buddy",
+      "one_line_summary": "Local multi-agent learning assistant: explanation, quiz and graded feedback.",
+      "my_role": "Not stated in source.",
+      "tech_stack": ["Python", "CrewAI", "Ollama (Mistral)", "Streamlit"],
+      "status": "Public repo, 3 commits; demo video in README.",
+      "links": {"github": "https://github.com/tisha-varma/AI-study-Buddy"},
+      "key_facts": ["Runs fully on the user's machine; Streamlit app and CLI"],
+      "deep_dive_id": "ai_study_buddy"
+    },
+    {
+      "name": "Workchain",
+      "one_line_summary": "Ethereum DApp for freelance work with smart-contract escrow and on-chain reputation.",
+      "my_role": "Not stated in source.",
+      "tech_stack": ["Python", "Flask", "Web3.py", "Solidity 0.8.0", "Ganache", "SQLite"],
+      "status": "Public repo, MIT license, 9 commits; local demos only.",
+      "links": {"github": "https://github.com/tisha-varma/workchain"},
+      "key_facts": ["Trustless escrow, MetaMask, task lifecycle create/bid/deliver/review"],
+      "deep_dive_id": "workchain"
+    },
+    {
+      "name": "HerDefenders",
+      "one_line_summary": "AI women's safety system with pose-based threat detection on CCTV.",
+      "my_role": "Founder.",
+      "tech_stack": ["MediaPipe", "OpenCV"],
+      "status": "Not active; code not public.",
+      "links": {},
+      "key_facts": ["Approved by SSIP Gujarat and funded as a startup"],
+      "deep_dive_id": "other_projects"
+    },
+    {
+      "name": "Other projects",
+      "one_line_summary": "Smart Multi-Agent Daily Planner, Smart Attendance System, Data-Entry-Job-Automation and Hidden Battles.",
+      "my_role": "Daily Planner was a team project with two teammates; other roles not stated.",
+      "tech_stack": ["OpenCV", "machine learning", "Beautiful Soup", "Selenium"],
+      "status": "Status varies by project; see the other_projects deep dive.",
+      "links": {"github": "https://github.com/tisha-varma/Data-Entry-Job-Automation"},
+      "key_facts": [
+        "Daily Planner: task-management, scheduling and execution agents; team of 3 (Tisha and two teammates)",
+        "Smart Attendance: OpenCV facial recognition; Data-Entry: Beautiful Soup + Selenium; Hidden Battles: 2.6k views"
+      ],
+      "deep_dive_id": "other_projects"
+    }
+  ],
+  "skills": {
+    "proficiency_stated": {
+      "JavaScript/TypeScript": "working level",
+      "Dart/Flutter": "2022 internship level",
+      "Solidity": "Workchain",
+      "Java": "academic coursework"
+    },
+    "skills_listed_unrated": {
+      "note": "listed on her profile; proficiency level not specified",
+      "primary_language": ["Python"],
+      "other_languages": ["SQL", "HTML/CSS"],
+      "backend": ["FastAPI", "Flask", "SQLAlchemy", "REST API design", "webhooks", "session management", "input validation", "exception handling", "web scraping"],
+      "frontend_and_interfaces": ["HTML", "CSS", "JavaScript", "Streamlit", "Tkinter"],
+      "databases": ["SQLite", "Firebase Firestore", "ChromaDB", "MySQL, PostgreSQL"],
+      "cloud_and_deployment": ["Render", "Streamlit Cloud", "Cloudinary", "Firebase Auth", "Google Cloud Platform"],
+      "systems_and_practices": ["system design", "state machines", "idempotency", "concurrency-safe transactions", "replay protection", "pytest unit and integration testing", "Git/GitHub", "pull-request workflow", "technical documentation", "secure system design"],
+      "ai_and_ml": ["scikit-learn", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Joblib", "Surprise", "clustering", "OpenCV", "MediaPipe", "OCR", "NLP", "embeddings (BGE)", "semantic search", "RAG", "prompt engineering", "LLM APIs (Groq, Gemini, Ollama)", "CrewAI multi-agent orchestration"],
+      "ai_assisted_development_tools": ["Claude Code", "Cursor", "Antigravity"]
+    }
+  },
+  "achievements": [
+    "HackSprint 2026, Open Innovation: 2nd place (17 Jan 2026).",
+    "Google Girl Hackathon 2025 finalist (PharmaMate).",
+    "Tic Tech Toe (DAIICT, 2025) and SSIP + GKS Hackathon Grand Finale finalist.",
+    "Founder of HerDefenders, approved and funded by SSIP Gujarat.",
+    "GTU Diploma 8th rank in the state IT top-10; DDCET 2024 Gujarat Rank 9.",
+    "250+ DSA problems solved on LeetCode and GeeksforGeeks.",
+    "Kaggle x Google AI Agents badge (18 Dec 2025); Google Cloud Study Jam 2025, one of LDCE's first 50 Cloud Completers.",
+    "LinkedIn article on recursion (1 Dec 2025); 132 followers."
+  ],
+  "known_gaps": [
+    "Tisha has no full-time employment experience.",
+    "RazorFlow AI has no user authentication yet.",
+    "RazorFlow AI session state is held in memory, so only one server process can run.",
+    "RazorFlow AI LLM calls are blocking.",
+    "RazorFlow AI runs Razorpay in test mode.",
+    "The RazorFlow AI audit chain is tamper-evident rather than unbreakable: timestamps and reason text are not hashed, there is no secret key, and concurrent writes can fork it.",
+    "The RazorFlow AI \"without AI\" revenue figure is derived by subtracting upsell items, not from a controlled experiment.",
+    "PharmaMate asks the user to paste the Gemini API key into main.py.",
+    "Workchain contracts are for local demos and need an audit before mainnet use.",
+    "MySQL and PostgreSQL were used only on a few small past projects.",
+    "HerDefenders is currently not active, and the code is not public.",
+    "Amazon recommender: optimistic rating bias, cold start, a limited item pool, and approximate explanations for SVD and NMF."
+  ],
+  "private_do_not_share": ["phone number", "home address", "date of birth", "government ID numbers", "salary expectations", "anything not listed in public_contact"],
+  "data_freshness": [
+    {"item": "B.E. CPI", "value": "9.01 / 10", "as_of": "so far"},
+    {"item": "INCF PR #44 status", "value": "OPEN", "as_of": "6 Nov 2026"},
+    {"item": "INCF PR #61 status", "value": "OPEN", "as_of": "6 Nov 2026"},
+    {"item": "Career Copilot usage", "value": "18 users, 31 resumes analyzed, 11 feedback entries", "as_of": "7 Nov 2026"}
+  ]
+}

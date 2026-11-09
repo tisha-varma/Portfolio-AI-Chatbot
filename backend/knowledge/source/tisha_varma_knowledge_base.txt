@@ -1,0 +1,655 @@
+=====================================================================
+TISHA VARMA - COMPLETE PROFILE INFORMATION
+=====================================================================
+
+=====================================================================
+1. IDENTITY AND CONTACT
+=====================================================================
+Name: Tisha Varma
+Pronouns: she/her
+Location: Ahmedabad, Gujarat, India
+Email: varmatisha0@gmail.com
+GitHub: https://github.com/tisha-varma (20 public repositories)
+LinkedIn: https://www.linkedin.com/in/tisha-varma/ (86 connections,
+  132 followers)
+LeetCode: https://leetcode.com/u/_tisha_2810
+LinkedIn headline: AI/ML & Software Engineering Student | Generative AI,
+  LLMs, NLP, AI Agents | Python | Building Production-Oriented AI
+  Systems
+GitHub bio: "As a tech enthusiast, I developed skills in Python, ML and
+  my passion for Web Development made me learn and contribute."
+GitHub profile README: "a passionate software developer building
+  impactful, scalable solutions that bridge the gap between technology
+  and human needs. I specialize in modern web development, artificial
+  intelligence integrations, and decentralized systems."
+LinkedIn status: open to work (recruiters only); Ahmedabad plus three
+  more locations; on-site, hybrid or remote.
+
+=====================================================================
+2. PROFESSIONAL SUMMARY
+=====================================================================
+Tisha Varma is a final-year B.E. Information Technology student
+(graduating June 2027) at L.D. College of Engineering, Ahmedabad. She
+works as a backend and full-stack Python engineer with applied-AI
+experience in LLMs, RAG and agentic systems. She takes ideas from a
+problem statement to a working product: the AI layer, backend
+architecture, APIs, database, authentication, deployment and a usable
+interface. She has three internships, an open-source contribution to
+INCF's Knowledge-Space AI Agent, a founder role in the SSIP
+Gujarat-supported women's-safety initiative HerDefenders, 2nd place at
+HackSprint 2026, and 250+ DSA problems solved.
+
+Core strengths:
+- Reliability and security design: idempotency, replay protection, input
+  guards, scoped exception handling, fallbacks and retries.
+- Testing: 181 automated pytest tests on RazorFlow AI, covering edge
+  cases and failure paths.
+- End-to-end ownership: backend, database, authentication, deployment,
+  documentation and onboarding examples.
+- Applied LLM engineering: RAG, embeddings, vector databases,
+  multi-model fallback, API-key rotation, multi-agent orchestration.
+- Public build habit: LinkedIn posts for projects, GitHub READMEs and a
+  technical article on recursion patterns.
+- Academics: CPI 9.01 (B.E.), CPI 9.68 (Diploma, 8th in the GTU state IT
+  rankings), Gujarat Rank 9 in DDCET 2024.
+
+Areas of interest: Generative AI, LLM applications, NLP, intelligent
+agents, backend engineering, applied AI product development.
+Hobbies: creative writing, poetry, reading.
+
+=====================================================================
+3. CAREER GOALS
+=====================================================================
+- Seeking a 4-6 month internship in backend or applied-AI engineering,
+  ideally starting between January and June 2027, ideally converting
+  to a pre-placement offer, then an entry-level SDE / AI engineer role.
+- Target roles: Backend Engineer (Python); AI/LLM Application Engineer;
+  Full-Stack Engineer (backend-leaning); SDE-1; Agentic AI / GenAI
+  Developer.
+- Target industries: fintech and payments, AI startups, product
+  companies.
+- Preferred cities: Bengaluru, Hyderabad, Pune, Mumbai. Open to
+  on-site, hybrid or remote work.
+
+=====================================================================
+4. EDUCATION
+=====================================================================
+B.E. Information Technology
+  L.D. College of Engineering (LDCE), Ahmedabad (GTU)
+  2024 - June 2027, CPI 9.01 / 10 so far.
+Diploma in Information Technology
+  Government Girls Polytechnic (GPG), Ahmedabad (GTU)
+  2021 - 2024, CPI 9.68 / 10 (SPI 10 in the final listed semester).
+  8th rank in the overall GTU state IT top-10 (Diploma Semester 6,
+  May 2024).
+SSC (Class 10)
+  St. Blaze School, GSEB, 2020, 87%.
+Entry exam
+  DDCET 2024 (ACPC Gujarat diploma-to-degree test): Gujarat Rank 9,
+  178.5 marks, Engineering and Technology. She joined the B.E. through
+  this diploma-to-degree (lateral) route, which is why the B.E. is 3
+  years after a diploma.
+
+Courses and certificates
+- 5-Day AI Agents Intensive Course with Google (Kaggle x Google), badge
+  dated 18 Dec 2025.
+- Google Cloud Study Jam 2025: one-month program, 20 Oct - 19 Nov 2025,
+  organised by GDGoC LDCE (certificate with QR verification). One of the
+  first 50 Cloud Completers from LDCE.
+- Course: DSA - Code and Debug.
+- Flutter developer internship certificate (Elsner Technologies, 2022).
+
+=====================================================================
+5. WORK EXPERIENCE AND LEADERSHIP
+=====================================================================
+
+5.1 Data Analyst and Machine Learning Intern - InfoLabz
+    Jul 2026 - Aug 2026, hybrid, Ahmedabad
+- Worked through an end-to-end ML workflow on a customer-analytics use
+  case: data preprocessing, exploratory data analysis, clustering, model
+  development, evaluation and interpretation.
+- Built an interactive Streamlit application that presents the ML
+  workflow results and lets users interact with the trained model.
+- Tools: Python, Pandas, NumPy, Scikit-learn, Matplotlib, Streamlit,
+  Joblib.
+
+5.2 Open Source Contributor - INCF Knowledge-Space AI Agent
+    Dec 2025 - Mar 2026, remote
+INCF is the International Neuroinformatics Coordinating Facility. The
+Knowledge-Space AI Agent is a neuroscience dataset-discovery agent
+(Python, LangGraph backend, Gemini) used by researchers worldwide.
+Upstream repository: https://github.com/INCF/knowledge-space-agent
+Tisha contributed on her own initiative, following the issue -> branch
+-> pull request -> code review -> fix workflow inside an existing
+Python/LLM codebase, and replied to reviewers and other contributors in
+the pull-request threads.
+
+PR #30 - MERGED
+  "Fix empty retrieval and API error handling in chat responses"
+  (fixes issue #15)
+  https://github.com/INCF/knowledge-space-agent/pull/30
+  - Returns a clear message when retrieval finds no results.
+  - Wraps the LLM/API call so failures give a friendly fallback.
+  - Stops internal error details from reaching users.
+  - Also included the missing "cd backend" README step.
+  - The maintainer's review noted it adds an empty-result guard, wraps
+    the Gemini call in try/except and removes internal error details,
+    and then merged it.
+
+PR #90 - APPROVED BY MAINTAINERS
+  "Add MAX_QUERY_LENGTH guard in handle_chat to prevent overly long
+  queries" (fixes issue #83)
+  https://github.com/INCF/knowledge-space-agent/pull/90
+  - Configurable MAX_QUERY_LENGTH environment variable (default 2000
+    characters), validated early in handle_chat after trimming
+    whitespace; tests added; documented in .env.template.
+  - Prevents oversized inputs reaching the Gemini API, which avoids
+    token-limit errors, application-layer denial-of-service risk and
+    wasted API quota.
+  - After a reviewer noted that int(os.getenv(...)) would raise an error
+    on a non-integer value, she added a try/except fallback to the
+    default.
+
+PR #44 - OPEN (as of 6 Nov 2026)
+  "feat: add minimal end-to-end example for running the agent locally"
+  (fixes issue #35, which she opened herself)
+  https://github.com/INCF/knowledge-space-agent/pull/44
+  - Adds examples/README.md, examples/basic_demo.py and
+    examples/local_knowledge.json (illustrative mock data).
+  - The demo needs only GOOGLE_API_KEY and Python 3.11+.
+  - Handles unconfigured search services (the agent returns zero
+    results gracefully).
+  - Another contributor said he would test it locally.
+
+PR #61 - OPEN (as of 6 Nov 2026)
+  "feat: add pluggable chat storage with optional SQLite persistence and
+  session-scoped caching" (closes issue #60)
+  https://github.com/INCF/knowledge-space-agent/pull/61
+  - New backend/chat_storage.py: a ChatStorage abstraction with
+    InMemoryChatStorage (default) and SQLiteChatStorage (opt-in, WAL
+    mode, thread-safe through a lock and a persistent connection).
+  - New backend/response_cache.py: session-scoped cache with TTL expiry
+    and LRU eviction; cache keys include the session_id to prevent
+    cross-session leakage.
+  - NeuroscienceAssistant in backend/agents.py uses the pluggable
+    storage and cache; the handle_chat signature is unchanged.
+  - Observability endpoints: GET /api/sessions, GET /api/cache/stats,
+    POST /api/cache/clear.
+  - Environment options: ENABLE_PERSISTENCE, ENABLE_CACHE, CHAT_DB_PATH,
+    CACHE_MAX_SIZE (128), CACHE_TTL_SECONDS (3600).
+  - Falls back to in-memory storage with a warning if SQLite fails.
+  - Standard library only (sqlite3, hashlib, OrderedDict, threading);
+    29 new unit tests (17 for storage, 12 for the cache), all passing.
+
+PR #29 - CLOSED (duplicate of #30)
+  "docs(README): fix backend run instructions" (fixes issue #22)
+  https://github.com/INCF/knowledge-space-agent/pull/29
+  - Adds the missing "cd backend" step before "uv run main.py".
+
+Summary: 1 merged PR, 1 PR approved by maintainers, 2 open PRs and 1
+closed duplicate.
+
+5.3 Machine Learning Intern - InfoLabz IT Services Pvt. Ltd.
+    Jul 2023 - Sep 2023
+- Worked on ML algorithms, data preprocessing, model training and
+  prediction in Python; used OpenCV for image processing and feature
+  extraction.
+
+5.4 Flutter Developer Intern - Elsner Technologies Pvt. Ltd.
+    May 2022 - Jun 2022, Ahmedabad
+- Two-month internship on mobile development with Flutter (certificate
+  on LinkedIn).
+
+5.5 Founder - HerDefenders (2025)
+- A women's-safety technology initiative for CCTV-protected
+  environments.
+- Built a prototype using pose-based threat detection (MediaPipe body
+  landmarks and OpenCV) for real-time monitoring and faster
+  intervention.
+- Approved by SSIP Gujarat and funded as a startup.
+- Currently not active. The code is not public.
+- LinkedIn skills tagged: Start-up Leadership, Project Management,
+  Artificial Intelligence.
+
+Tisha has no full-time employment experience.
+
+=====================================================================
+6. PROJECTS
+=====================================================================
+
+---------------------------------------------------------------------
+6.1 RAZORFLOW AI - Agentic Commerce and Payments Platform
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/RazorFlow-AI
+Built solo for the Razorpay Buildathon, Track 01: AI Growth and Agentic
+Commerce. Public repository, master branch.
+LinkedIn post: about 88 reactions and about 4,900 impressions.
+
+Idea: an AI shopping agent that understands a natural-language request,
+discovers products through an AI-readable merchant catalog, recommends
+and upsells, but never spends money without explicit user approval. The
+AI is good at understanding people but unreliable with money, so every
+money decision is made by ordinary deterministic backend code plus a
+human approval. "AI recommends, human approves, system verifies."
+Architecture: AI -> Policy Engine -> User Approval -> Razorpay ->
+Payment Verification -> Order.
+
+Key numbers: 181 automated pytest tests; 12 states in the session state
+machine (SessionState); about 40 REST endpoints; 10 API routers; 13
+database tables.
+
+Stack: Python, FastAPI, SQLAlchemy, Pydantic, SQLite (foreign keys on),
+Razorpay API in test mode with the official Python SDK, pytest; an LLM
+served through Groq with Gemini and a local Ollama model also supported;
+Next.js/TypeScript frontend with Tailwind CSS. Prices are stored as
+integer paise (Rs 1 = 100 paise) to avoid floating-point errors.
+
+Database tables: Merchant, Product, ProductVariant, CommercePolicy,
+Cart, CartItem, Approval, Order, OrderItem, RazorpayPayment, AuditEvent,
+AIInteraction, SessionStateEvent.
+
+Purchase flow, step by step:
+1. POST /api/agent/chat: logs USER_INTENT_RECEIVED, sets the session
+   state to DISCOVERING, loads chat history (rebuilt from the
+   AIInteraction table after a server restart), and adds a live cart
+   snapshot to the LLM context.
+2. Tool-calling loop (up to 4 rounds): the LLM can request tools for
+   searching products, getting a product, checking stock, finding
+   related products, creating a cart, adding/removing/updating cart
+   items and initiating checkout. The LLM only requests tools; backend
+   code runs them. The LLM never passes a price or session id; the
+   server supplies both.
+3. Cart: CartService.add_item reads the price from the database and
+   snapshots it on the cart line (unit_price_paise). Totals are integer
+   sums computed in Python. Related products (for example socks with
+   shoes) are attached as upsell suggestions and logged as
+   UPSELL_OFFERED. The policy verdict returns with every cart change.
+4. Policy engine (check_purchase_policy), checked in order: the cart
+   exists and is not empty; it has at least one real (non-upsell) item;
+   the total is within the minimum and maximum transaction (default
+   maximum Rs 5,000); the per-item quantity cap (5); paid spending in
+   the session plus the cart is within the session limit (Rs 10,000);
+   the upsell portion is within its cap (Rs 2,000). Only paid orders
+   count toward the session limit, so a failed payment does not use up
+   budget.
+5. initiate_checkout does not pay. It creates a pending Approval row
+   with a random single-use token and a frozen copy of the policy, and
+   moves the state to AWAITING_APPROVAL. A pending approval for the same
+   amount is reused; if the cart changed, the old approval is marked
+   expired.
+6. POST /api/checkout/approve: constant-time token comparison; the token
+   is deleted so the request cannot be replayed; the policy is re-run;
+   the state transition is checked; the approval is marked approved and
+   PAYMENT_APPROVED is logged. No LLM tool can perform this step.
+7. /api/payment/create-order: requires an approved approval; a
+   stale-amount check recomputes the cart total and returns HTTP 409 if
+   it differs from the approved amount; the policy is re-checked; the
+   server creates the Razorpay order for the server-calculated amount
+   (the browser never sends an amount); saves the Order and
+   RazorpayPayment rows and logs PAYMENT_ORDER_CREATED.
+8. The browser opens Razorpay's checkout.js popup using only the public
+   key id.
+9. Payment is confirmed in three independent ways: (a) browser
+   verification, where the server finds the order by the Razorpay order
+   id stored in its own database and recomputes the HMAC signature; (b)
+   a webhook at /api/payment/webhook for payment.captured and
+   payment.failed, with the signature checked on the raw body, events
+   older than 5 minutes ignored and duplicate payment ids skipped; (c)
+   status polling at /api/payment/status/{id} for about 30 seconds.
+10. _mark_order_paid sets the order to paid, empties the cart, moves the
+    state to ORDER_CONFIRMED and writes audit events. The merchant
+    dashboard reads the same tables.
+
+Other components:
+- Agent behaviour: fixed (non-LLM) replies for sensitive messages such as
+  "Approval completed" and "Payment successful"; pattern-matched "show me
+  more options" without an LLM call; provider fallback across multiple
+  rotating Groq API keys.
+- State machine: includes IDLE, DISCOVERING, RECOMMENDING,
+  CART_BUILDING, UPSELLING, POLICY_CHECK, AWAITING_APPROVAL,
+  PAYMENT_PENDING, PAYMENT_SUCCESS, PAYMENT_FAILED (retry returns to
+  PAYMENT_PENDING) and ORDER_CONFIRMED; 12 states in total. Illegal
+  transitions return HTTP 409. State lives in server memory and
+  recover_session_state rebuilds it from the database after a restart.
+- Audit log: every important event is an AuditEvent row whose hash is
+  SHA-256(previous hash + event type + event data + actor + session id).
+  GET /api/audit/verify reports where the chain breaks, and the
+  dashboard shows a "chain intact" badge.
+- Merchant dashboard: revenue, average order value, AI conversion (paid
+  orders divided by AI sessions), upsell revenue, and a "with AI vs
+  without AI" comparison. Orders are prefixed RF- (live test purchases),
+  HIST- (seeded history) or DEMO- (scripted demos); only RF- orders count
+  as live.
+- /.well-known/ai-commerce.json: a public machine-readable description
+  of the shop (catalog, limits, purchase flow) for other AI agents.
+- Frontend pages: landing, buyer (chat, cart, approval card), merchant
+  (dashboard, audit table) and setup (edit the policy). The session id is
+  kept in localStorage and the approval card polls about every 2.5
+  seconds.
+- Protection: rate limit of 120 requests per minute per IP on payment
+  and checkout routes; secrets only in .env; the Razorpay secret key is
+  never sent to the browser; HTTP 409/403 errors for stale, replayed or
+  invalid actions.
+- Failure handling: a failed payment marks the order failed, logs the
+  event, uses no budget and allows a new Razorpay order on retry under
+  the same approval; a payment confirmed after the user closes the popup
+  is picked up by the webhook and status polling; duplicate webhook
+  events are ignored.
+- Demo scenario in the README: "marathon shoes under Rs 5,000" ->
+  recommend RunPro Sprint (Rs 4,499) -> upsell socks (Rs 499) -> cart
+  of Rs 4,998 passes the policy -> approve -> Razorpay test checkout ->
+  order -> audit trail -> merchant dashboard; plus a failure scenario
+  with no duplicate charge.
+
+Current limitations: no user authentication yet; session state is held
+in memory so only one server process can run; LLM calls are blocking;
+the audit chain is tamper-evident rather than unbreakable (timestamps
+and reason text are not hashed, there is no secret key, and concurrent
+writes can fork it); the "without AI" revenue figure is derived by
+subtracting upsell items, not from a controlled experiment.
+
+---------------------------------------------------------------------
+6.2 CAREER COPILOT AI - Career Intelligence Platform
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/Career-Copilot
+Live app: https://career-copilot-wbkk.onrender.com/
+Tagline: Strategic Career Intelligence Suite: semantic resume auditing,
+predictive interview prep, and AI asset generation.
+Repository: public, MIT license, 51 commits. Topics: ai, career-tech,
+fastapi, firebase, firestore, llama3, python, resume-analyzer.
+Usage (as of 7 Nov 2026): 18 users, 31 resumes analyzed, 11 feedback
+entries.
+Deployed on Render.
+
+What it is: a career-optimisation platform that turns a static resume
+into strategic career assets using an LLM plus cloud infrastructure. It
+aims to understand the intent and impact of someone's experience, not
+just match keywords.
+
+Features:
+1. Resume auditing
+   - Uses LLaMA 3.3 (llama-3.3-70b-versatile via Groq) to benchmark a
+     resume against 12+ industry roles (AI Engineer, Product Manager,
+     DevOps and more).
+   - Affinity (role-fit) score: weighted match on technical skills, soft
+     skills and leadership.
+   - Skill-gap detection: critical missing keywords plus a prioritised
+     learning roadmap with curated resources, including YouTube.
+2. Interview preparation
+   - Technical, behavioural and resume-based questions generated from
+     the user's own projects and tenure, with STAR-framework guidance.
+   - On-demand question generation through AJAX.
+3. Professional assets
+   - Context-aware cover letters generated from a pasted job
+     description.
+   - Downloadable PDF career analysis report with role-fit charts.
+   - Integrated job search linking to LinkedIn, Indeed and Glassdoor.
+4. Admin dashboard
+   - Live view of user growth, uploads and interactions; audit logging
+     of logins and system changes; feedback with CSV export; user,
+     resume, feedback and audit-log management.
+
+Tech stack:
+- Languages: Python 3.12+, JavaScript (ES6+), HTML5/CSS3
+- Frameworks and libraries: FastAPI, Tailwind CSS, Jinja2, ReportLab,
+  Matplotlib, pdfplumber, Gunicorn
+- Cloud and platforms: Firebase Authentication (Google Sign-In), Google
+  Cloud Firestore, Cloudinary (resume storage), Render, Google Cloud
+  Platform
+- Databases: Firestore, ChromaDB (vector database), CSV/JSON local
+  storage
+- AI: Groq Cloud API, LLaMA models, BGE embeddings with ChromaDB
+  retrieval, Firebase Admin SDK
+- Dev tools: Git/GitHub, pip, python-dotenv, Mermaid.js
+Resume parsing combines pdfplumber with regex section and skill
+detection and LLM structured extraction. Reliability features: automatic
+API-key rotation across multiple keys and multi-model fallback.
+
+Architecture: candidate or admin -> FastAPI backend with Firebase auth
+middleware -> pdfplumber PDF extractor -> LLaMA engine returns JSON
+scoring and gap analysis -> results and file metadata cached in
+Firestore; the original resume is stored in Cloudinary; ReportLab
+generates the PDF report; local session and audit logs are reviewed by
+the admin.
+
+Core API endpoints:
+  POST /analyze - parse a resume and generate career insights
+  GET /download-report - export the career analysis PDF
+  GET /generate-resume-questions - AJAX interview-question generation
+  POST /submit-feedback - user ratings
+  GET /admin/dashboard - admin monitoring (admin only)
+  DELETE /admin/delete-user/{uid} - remove a profile (admin only)
+
+Folder structure: app/main.py (router and lifecycle),
+llama_analyzer.py (LLM logic), firestore_db.py, cloudinary_storage.py,
+report_generator.py, audit.py, static/, templates/; data/ for feedback
+and local sessions.
+
+Planned improvements: an ATS optimisation score, mock voice interviews
+(ElevenLabs), a browser extension for LinkedIn job postings.
+
+---------------------------------------------------------------------
+6.3 AMAZON VIDEO GAMES EXPLAINABLE RECOMMENDATION SYSTEM
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/Amazon-Recommendation-System
+Live demo: https://amazon-recommendation-system-games.streamlit.app/
+Tagline: Comparing SVD, KNN, NMF with Explainable AI Recommendations.
+Repository: public, 16 commits, MIT license badge. LinkedIn post: 481
+impressions.
+Stack: Python 3.12, scikit-surprise 1.1.5, pandas, scikit-learn, numpy,
+matplotlib, seaborn, Streamlit, Hugging Face datasets.
+
+Idea: compare three collaborative-filtering algorithms on real Amazon
+data and give a human-readable reason for every recommendation.
+
+Data: Amazon Reviews 2023, Video Games category. 1,000,000 raw reviews
+sampled (streamed from 2.8M total, no full download), filtered to
+128,687 interactions from 14,839 users and 2,206 items; 99.61% sparse;
+8.7 ratings per user and 58.3 ratings per item on average. Filtering
+iteratively removes users with fewer than 5 ratings and items with fewer
+than 20 ratings until stable (22 iterations).
+Split: temporal 80% train / 10% validation / 10% test, so the model never
+trains on the future.
+Models: SVD (100 factors, 20 epochs), item-based KNN (cosine, 40
+neighbours), NMF (50 factors, 50 epochs).
+Metrics: RMSE, Precision@K, Recall@K, NDCG@K; a "liked" item is a
+rating of 4 or higher.
+
+Results (from the repository README):
+  Model | RMSE   | P@5    | P@10   | R@10   | NDCG@10
+  SVD   | 1.1911 | 0.3481 | 0.1954 | 0.7443 | 0.8081
+  KNN   | 1.2527 | 0.3538 | 0.2004 | 0.7633 | 0.8053
+  NMF   | 1.2760 | 0.3514 | 0.1996 | 0.7642 | 0.8046
+SVD is best on RMSE and NDCG@10, KNN on Precision@5 and @10, NMF on
+Recall@10. The best rating predictor is not always the best
+recommender.
+
+Explainability:
+- KNN: true explanation by tracing which of the user's highly rated
+  items are neighbours of the recommended item.
+- SVD and NMF: approximate explanation through co-purchase patterns
+  (users who rated this item highly also rated X highly), since latent
+  factors are not human-readable.
+Features: dark-themed Streamlit app with personalised recommendations,
+cold-start handling (fallback to popular items), user history
+visualisation and live algorithm comparison.
+Exploratory findings: 64% of reviews are 5-star; the top 10% of items
+receive over 60% of ratings; the matrix is 3.21% filled; review volume
+peaked in 2018-2020.
+Stated limitations: optimistic rating bias, cold start, a limited item
+pool, approximate explanations for SVD and NMF.
+Pipeline: preprocess.py -> train.py -> evaluate.py / explain.py ->
+recommend.py -> app/streamlit_app.py.
+
+---------------------------------------------------------------------
+6.4 PHARMAMATE - Pharmacist's Assistant
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/PharmaMate
+Google Girl Hackathon 2025 finalist. Built solo.
+Public repository, 7 commits; README screenshots dated 25-26 Feb 2025.
+Stack: Python, Tkinter GUI, Pandas, Pillow, Google Generative AI
+(Gemini API).
+
+What it does: a pharmacist's assistant that matches orders against
+handwritten prescriptions, creates the order, and offers a
+symptom-to-possible-condition assistant.
+- The user uploads a prescription image. It is sent directly to Gemini
+  (gemini-2.0-pro-exp-02-05, via the google.generativeai library) as
+  image bytes, so no separate OCR library is used.
+- Medicine names are extracted from Gemini's reply with a regular
+  expression and checked against a pandas-backed inventory file
+  (medicine_database.csv).
+- If a medicine is unavailable, a second Gemini call suggests 3
+  alternatives and the first one found in the inventory is used.
+- Price, frequency and special instructions come from the inventory
+  file; the final order with total cost can be saved as a text file.
+- Processing runs in a background thread so the Tkinter interface stays
+  responsive. The Gemini API key is configured by pasting it into
+  main.py, as described in the README.
+- The symptom module (systoms.py) asks for symptoms through an interface
+  and suggests a possible condition.
+
+---------------------------------------------------------------------
+6.5 AI STUDY BUDDY
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/AI-study-Buddy
+A local multi-agent learning assistant built with CrewAI, Ollama
+(Mistral) and Streamlit. It runs fully on the user's machine (private,
+zero-cost, offline inference). Python 3.12+; setup uses
+`ollama pull mistral` with CrewAI pointed at the local Ollama endpoint
+through environment variables.
+Three agents run in a strict sequence:
+- Topic Agent: a structured, beginner-friendly explanation of any topic.
+- Quiz Agent: reads that explanation and writes 3 multiple-choice
+  questions with the answers hidden.
+- Feedback Agent: takes the material, the questions and the user's
+  answers; grades them, explains each option and returns a score such as
+  2/3.
+Three-phase pipeline: explanation -> auto-generated quiz -> grading with
+personalised feedback. Interfaces: Streamlit web app (app.py) and a
+command-line tool (main.py), both over the same backend logic.
+Public repository, 3 commits, demo video in the README.
+
+---------------------------------------------------------------------
+6.6 WORKCHAIN - Decentralised Freelance Marketplace
+---------------------------------------------------------------------
+Repository: https://github.com/tisha-varma/workchain
+A decentralised application (DApp) on Ethereum that connects
+freelancers and clients through smart contracts: trustless escrow, dual
+client/freelancer roles, MetaMask wallet connection, an on-chain
+reputation system and a full task lifecycle (create, bid, deliver,
+review). Smart contracts track task status (Open, In Progress,
+Completed, Disputed) and access control.
+Stack: Python 3.8+ with Flask, Web3.py, Solidity 0.8.0, Ganache local
+test network (chain ID 1337), MetaMask, SQLAlchemy with SQLite,
+flask-login, solcx. The README notes the contracts are for local demos
+and need an audit before mainnet use.
+Public repository, MIT license, 9 commits.
+
+---------------------------------------------------------------------
+6.7 HERDEFENDERS - AI Women's Safety System
+---------------------------------------------------------------------
+Pose-based threat detection proof of concept using MediaPipe and OpenCV
+on CCTV footage, aimed at real-time monitoring and alerting. Founded by
+Tisha; approved by SSIP Gujarat and funded as a startup. Not currently
+active; code not public. (See 5.5.)
+
+---------------------------------------------------------------------
+6.8 OTHER PROJECTS
+---------------------------------------------------------------------
+- Smart Multi-Agent Daily Planner: team project of 3 (Tisha, Mugdha
+  Bhangale and Jay Raval), built after the Kaggle x Google 5-Day AI
+  Agents Intensive. Three coordinated agents: Task Management (collect,
+  prioritise, decompose), Scheduling (timeline, workload balancing,
+  dynamic adjustment) and Execution (turn the schedule into actionable
+  output).
+- Smart Attendance System: facial-recognition attendance marking using
+  OpenCV and machine learning; shared as a 10-page LinkedIn document
+  post.
+- Data-Entry-Job-Automation: a course capstone from Angela Yu's "100
+  Days of Code". Beautiful Soup scrapes rental listings (price, address,
+  link) for San Francisco from a Zillow clone, and Selenium fills a
+  Google Form for each listing so the responses land in a Google Sheet.
+  https://github.com/tisha-varma/Data-Entry-Job-Automation
+- "Hidden Battles: Shedding light on mental health disorders": a
+  digital-marketing and content project (Techno Sarita); the video
+  reached 2.6k views.
+
+=====================================================================
+7. TECHNICAL SKILLS
+=====================================================================
+Primary language: Python
+Other languages: SQL; JavaScript/TypeScript (working level); HTML/CSS;
+  Dart/Flutter (2022 internship level); Solidity (Workchain); Java
+  (academic coursework).
+Backend: FastAPI, Flask, SQLAlchemy, REST API design, webhooks, session
+  management, input validation, exception handling, web scraping.
+Frontend and interfaces: HTML, CSS, JavaScript (Career Copilot),
+  Streamlit, Tkinter.
+Databases: SQLite, Firebase Firestore, ChromaDB (vector database).
+  MySQL and PostgreSQL were used on a few small past projects.
+Cloud and deployment: Render, Streamlit Cloud, Cloudinary, Firebase
+  Auth, Google Cloud Platform (Study Jam).
+Systems and practices: system design, state machines, idempotency,
+  concurrency-safe transactions, replay protection, pytest unit and
+  integration testing, Git/GitHub, pull-request workflow, technical
+  documentation, secure system design.
+AI and ML: scikit-learn, NumPy, Pandas, Matplotlib, Seaborn, Joblib,
+  Surprise (collaborative filtering), clustering, OpenCV, MediaPipe,
+  OCR, NLP, embeddings (BGE), semantic search, RAG, prompt engineering,
+  LLM APIs (LLaMA 3.3 via Groq, Gemini, Mistral via Ollama), CrewAI
+  multi-agent orchestration.
+AI-assisted development tools: Claude Code, Cursor, Antigravity.
+
+=====================================================================
+8. ACHIEVEMENTS AND RECOGNITION
+=====================================================================
+- HackSprint 2026 (GDG on Campus, Swarrnim Startup and Innovation
+  University), Open Innovation theme: 2nd place (certificate dated 17
+  Jan 2026).
+- Finalist, Google Girl Hackathon 2025 (PharmaMate).
+- Finalist, Tic Tech Toe (DAIICT, 2025).
+- Finalist, SSIP + GKS Hackathon Grand Finale.
+- Participated in the Razorpay Buildathon, Track 01: AI Growth and
+  Agentic Commerce, with RazorFlow AI.
+- Founder of HerDefenders, approved and funded by SSIP Gujarat.
+- GTU Diploma: 8th rank in the overall state IT top-10 (CPI 9.68).
+- DDCET 2024: Gujarat Rank 9.
+- 250+ DSA problems solved on LeetCode and GeeksforGeeks.
+- Kaggle x Google 5-Day AI Agents Intensive badge (18 Dec 2025).
+- Google Cloud Study Jam 2025 completion; one of the first 50 Cloud
+  Completers from LDCE.
+- Published a LinkedIn article, "Mastering Recursion: 5 Patterns That
+  Made Everything Click" (1 Dec 2025).
+- Active in Google Developer Groups on Campus (GDGoC) at LDCE and in
+  events at Swarrnim Startup and Innovation University (SSIU).
+- LinkedIn reach: 132 followers; the Study Jam post had about 1,600
+  impressions.
+
+=====================================================================
+9. ALL LINKS
+=====================================================================
+GitHub profile: https://github.com/tisha-varma
+RazorFlow AI: https://github.com/tisha-varma/RazorFlow-AI
+Career Copilot AI: https://github.com/tisha-varma/Career-Copilot
+  Live: https://career-copilot-wbkk.onrender.com/
+Amazon Video Games Recommender:
+  https://github.com/tisha-varma/Amazon-Recommendation-System
+  Live: https://amazon-recommendation-system-games.streamlit.app/
+PharmaMate: https://github.com/tisha-varma/PharmaMate
+AI Study Buddy: https://github.com/tisha-varma/AI-study-Buddy
+Workchain: https://github.com/tisha-varma/workchain
+Data-Entry-Job-Automation:
+  https://github.com/tisha-varma/Data-Entry-Job-Automation
+INCF Knowledge-Space Agent (upstream):
+  https://github.com/INCF/knowledge-space-agent
+  Her pull requests:
+  https://github.com/INCF/knowledge-space-agent/pull/30
+  https://github.com/INCF/knowledge-space-agent/pull/90
+  https://github.com/INCF/knowledge-space-agent/pull/44
+  https://github.com/INCF/knowledge-space-agent/pull/61
+  https://github.com/INCF/knowledge-space-agent/pull/29
+LinkedIn: https://www.linkedin.com/in/tisha-varma/
+LeetCode: https://leetcode.com/u/_tisha_2810
+Email: varmatisha0@gmail.com
+=====================================================================

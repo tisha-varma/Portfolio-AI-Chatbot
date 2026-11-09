@@ -1,0 +1,181 @@
+{
+  "razorflow_ai": {
+    "title": "RazorFlow AI - Agentic Commerce and Payments Platform",
+    "description": "Agentic commerce and payments platform with a policy engine, human approval, Razorpay test-mode checkout and an audit chain.",
+    "keywords": [
+      "razorflow",
+      "razorflow ai",
+      "razorpay",
+      "payment",
+      "payments",
+      "commerce",
+      "agentic commerce",
+      "shopping agent",
+      "shopping",
+      "cart",
+      "checkout",
+      "approval",
+      "policy engine",
+      "audit chain",
+      "webhook",
+      "buildathon",
+      "paise",
+      "session state"
+    ]
+  },
+  "career_copilot": {
+    "title": "Career Copilot AI - Career Intelligence Platform",
+    "description": "Resume auditing, interview prep and AI asset generation with LLaMA via Groq, Firebase and Firestore.",
+    "keywords": [
+      "career copilot",
+      "resume",
+      "resumes",
+      "resume audit",
+      "resume auditing",
+      "interview prep",
+      "interview preparation",
+      "interview questions",
+      "cover letter",
+      "career intelligence",
+      "job search",
+      "ats",
+      "rag",
+      "retrieval",
+      "embeddings",
+      "semantic search",
+      "vector database",
+      "chromadb",
+      "firestore",
+      "firebase",
+      "render"
+    ]
+  },
+  "amazon_recommender": {
+    "title": "Amazon Video Games Explainable Recommendation System",
+    "description": "Compares SVD, KNN and NMF on Amazon Video Games data with human-readable explanations.",
+    "keywords": [
+      "amazon",
+      "recommendation",
+      "recommendations",
+      "recommender",
+      "recommendation system",
+      "svd",
+      "knn",
+      "nmf",
+      "collaborative filtering",
+      "video games",
+      "scikit-surprise",
+      "surprise",
+      "cold start",
+      "ndcg",
+      "rmse",
+      "explainable",
+      "explainability"
+    ]
+  },
+  "pharmamate": {
+    "title": "PharmaMate - Pharmacist's Assistant",
+    "description": "Pharmacist's assistant that reads handwritten prescriptions with Gemini and suggests alternatives.",
+    "keywords": [
+      "pharmamate",
+      "pharmacy",
+      "pharmacist",
+      "prescription",
+      "prescriptions",
+      "medicine",
+      "medicines",
+      "gemini",
+      "tkinter",
+      "inventory",
+      "symptom",
+      "symptoms"
+    ]
+  },
+  "ai_study_buddy": {
+    "title": "AI Study Buddy",
+    "description": "Local CrewAI, Ollama and Streamlit learning assistant with explanation, quiz and feedback agents.",
+    "keywords": [
+      "ai study buddy",
+      "study buddy",
+      "quiz",
+      "crewai",
+      "ollama",
+      "mistral",
+      "learning assistant",
+      "topic agent",
+      "quiz agent",
+      "feedback agent"
+    ]
+  },
+  "workchain": {
+    "title": "Workchain - Decentralised Freelance Marketplace",
+    "description": "Ethereum DApp for freelance work with smart-contract escrow, MetaMask and on-chain reputation.",
+    "keywords": [
+      "workchain",
+      "blockchain",
+      "ethereum",
+      "solidity",
+      "smart contract",
+      "smart contracts",
+      "freelance",
+      "freelancer",
+      "escrow",
+      "metamask",
+      "ganache",
+      "web3",
+      "dapp",
+      "decentralised",
+      "decentralized"
+    ]
+  },
+  "open_source_incf": {
+    "title": "Open Source Contribution - INCF Knowledge-Space AI Agent",
+    "description": "Five pull requests to INCF's neuroscience Knowledge-Space AI Agent, with statuses as of 6 Nov 2026.",
+    "keywords": [
+      "incf",
+      "knowledge-space",
+      "knowledge space",
+      "open source",
+      "open-source",
+      "pull request",
+      "pull requests",
+      "pr",
+      "prs",
+      "merged",
+      "upstream",
+      "neuroscience",
+      "langgraph",
+      "contributor",
+      "code review",
+      "duplicate"
+    ]
+  },
+  "other_projects": {
+    "title": "Other Projects",
+    "description": "HerDefenders, Smart Multi-Agent Daily Planner, Smart Attendance System, Data-Entry-Job-Automation and Hidden Battles.",
+    "keywords": [
+      "herdefenders",
+      "women's safety",
+      "women safety",
+      "cctv",
+      "mediapipe",
+      "pose detection",
+      "daily planner",
+      "planner",
+      "multi-agent",
+      "attendance",
+      "smart attendance",
+      "facial recognition",
+      "data-entry",
+      "data entry",
+      "automation",
+      "zillow",
+      "selenium",
+      "beautiful soup",
+      "google form",
+      "hidden battles",
+      "mental health",
+      "techno sarita"
+    ]
+  }
+}
