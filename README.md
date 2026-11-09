@@ -114,6 +114,29 @@ Or from the project root:
 python -m pytest backend -q
 ```
 
+## Secret scanning
+
+`scripts/check_secrets.sh` scans the staged index for Groq, Google, and OpenAI
+style keys and private-key headers. It prints file names only, never the matched
+text, and exits non-zero so the commit is blocked.
+
+Install it as a pre-commit hook (Git Bash, macOS, or Linux):
+
+```bash
+cp scripts/check_secrets.sh .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+Run it manually at any time:
+
+```bash
+bash scripts/check_secrets.sh
+```
+
+Hooks live in `.git/hooks`, which is not committed, so every clone runs the
+install command once. If the script flags a real key, remove it from the staged
+files and rotate it in the provider's console before retrying the commit.
+
 ## Run the API
 
 ```bash
