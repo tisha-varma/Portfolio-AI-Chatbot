@@ -1,6 +1,7 @@
 # Secrets and local environment
 .env
 .env.*
+*.env
 !.env.example
 
 # Python
@@ -20,11 +21,20 @@ dist/
 .coverage
 htmlcov/
 
+# Logs and generated reports
+*.log
+backend/eval/reports/*
+!backend/eval/reports/.gitkeep
+!backend/eval/reports/LATEST.md
+
 # Virtual environments
 .venv/
 venv/
 env/
 ENV/
+
+# Node (frontend tooling, if added later)
+node_modules/
 
 # Editors and OS files
 .vscode/
