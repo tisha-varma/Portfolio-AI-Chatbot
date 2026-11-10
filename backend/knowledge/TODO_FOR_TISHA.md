@@ -1,9 +1,9 @@
 # TODO for Tisha
 
 Items the knowledge base could not ground in
-`backend/knowledge/source/tisha_varma_knowledge_base.txt`. Confirm or correct
-these before production. This file is deliberately **not** loaded into the
-prompt.
+`backend/knowledge/source/tisha_varma_knowledge_base.txt`. Answer every line
+honestly; anything you cannot confirm stays out of the bot. This file is
+deliberately **not** loaded into the prompt.
 
 ## Skill proficiency
 
@@ -47,15 +47,26 @@ prompt.
 - [ ] GitHub (20 public repositories) and LinkedIn (86 connections, 132
   followers) counts are not dated in the source, so they are not in
   `data_freshness`. Should the bot quote them, and as of when?
-- [ ] Confirm that `varmatisha0@gmail.com` is the public contact address the bot
-  may share with every visitor.
+- [x] Confirmed: `varmatisha0@gmail.com` is the public contact address the bot
+  may share with every visitor. (Confirmed by Tisha.)
 - [ ] HerDefenders has no dedicated deep-dive file; it lives in
   `sections/other_projects.md` and in the core experience/projects entries. Is
   that grouping acceptable, or should it get its own section?
+- [ ] There is no deep-dive section for the Flutter developer internship
+  (Elsner Technologies, 2022); it lives only in the core education and
+  experience entries. Is that acceptable?
 - [ ] The source names "gemini-2.0-pro-exp-02-05" for PharmaMate and
   "llama-3.3-70b-versatile" for Career Copilot. These are historical project
   details, not the chatbot's model. Keep them in the deep dive?
 - [ ] Confirm whether RazorFlow's "master branch" is still the default branch.
+- [ ] The B.E. CPI is "9.01 / 10 so far" with no snapshot date. What date should
+  the bot use? Until answered, it says "so far" without a date.
+- [ ] The source dates PR #44 and PR #61 as OPEN on 6 Nov 2026. Are PR #30
+  (merged) and PR #90 (approved by maintainers) still in those states? The bot
+  currently dates the five-PR tally 6 Nov 2026.
+- [ ] Should the resume PDF be downloadable from the portfolio? If yes, give
+  the public link. The source lists no resume file or download link, so the bot
+  cannot offer one yet.
 
 ## Privacy
 
