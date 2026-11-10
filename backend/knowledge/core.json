@@ -10,9 +10,9 @@
       "leetcode": "https://leetcode.com/u/_tisha_2810"
     }
   },
-  "summary": "Tisha Varma is a final-year B.E. Information Technology student (graduating June 2027) at L.D. College of Engineering, Ahmedabad. She works as a backend and full-stack Python engineer with applied-AI experience in LLMs, RAG and agentic systems. She takes ideas from a problem statement to a working product: the AI layer, backend architecture, APIs, database, authentication, deployment and a usable interface. She has three internships, an open-source contribution to INCF's Knowledge-Space AI Agent, a founder role in the SSIP Gujarat-supported women's-safety initiative HerDefenders, 2nd place at HackSprint 2026, and 250+ DSA problems solved.",
+  "summary": "Tisha Varma is a final-year B.E. Information Technology student (graduating June 2027) at L.D. College of Engineering, Ahmedabad. She works as a backend and full-stack Python engineer with applied-AI experience in LLMs, RAG and agentic systems. She takes ideas from a problem statement to a working product: the AI layer, backend architecture, APIs, database, authentication, deployment and a usable interface. She has three internships, an INCF open-source contribution, a founder role at HerDefenders, and 2nd place at HackSprint 2026.",
   "career_goals": [
-    "Seeking a 4-6 month internship in backend or applied-AI engineering, ideally starting between January and June 2027, converting to a pre-placement offer, then an entry-level SDE / AI engineer role.",
+    "Seeking a 4-6 month internship in backend or applied-AI engineering, starting between January and June 2027, converting to a pre-placement offer, then an entry-level SDE / AI engineer role.",
     "Target roles: Backend Engineer (Python); AI/LLM Application Engineer; Full-Stack Engineer (backend-leaning); SDE-1; Agentic AI / GenAI Developer.",
     "Target industries: fintech and payments, AI startups, product companies. Preferred cities: Bengaluru, Hyderabad, Pune, Mumbai; on-site, hybrid or remote."
   ],
@@ -47,30 +47,35 @@
   "full_time_employment": "None.",
   "experience": [
     {
+      "id": "infolabz-data-analyst-ml-intern",
       "role": "Data Analyst and Machine Learning Intern",
       "organisation": "InfoLabz",
       "dates": "Jul 2026 - Aug 2026",
       "details": ["ML workflow on a customer-analytics use case; interactive Streamlit app. Tools: Python, Pandas, NumPy, Scikit-learn, Matplotlib, Streamlit, Joblib."]
     },
     {
+      "id": "incf-open-source-contributor",
       "role": "Open Source Contributor",
       "organisation": "INCF Knowledge-Space AI Agent",
       "dates": "Dec 2025 - Mar 2026",
       "details": ["Issue -> branch -> PR -> review -> fix in a Python/LLM codebase. 1 merged PR, 1 approved, 2 open, 1 closed duplicate (6 Nov 2026)."]
     },
     {
+      "id": "infolabz-ml-intern-2023",
       "role": "Machine Learning Intern",
       "organisation": "InfoLabz IT Services Pvt. Ltd.",
       "dates": "Jul 2023 - Sep 2023",
       "details": ["ML algorithms, preprocessing, model training and prediction in Python; OpenCV for image processing."]
     },
     {
+      "id": "elsner-flutter-intern-2022",
       "role": "Flutter Developer Intern",
       "organisation": "Elsner Technologies Pvt. Ltd.",
       "dates": "May 2022 - Jun 2022",
       "details": ["Two-month Flutter mobile-development internship (certificate on LinkedIn)."]
     },
     {
+      "id": "herdefenders-founder",
       "role": "Founder",
       "organisation": "HerDefenders",
       "dates": "2025",
@@ -79,6 +84,7 @@
   ],
   "projects": [
     {
+      "id": "razorflow-ai",
       "name": "RazorFlow AI",
       "one_line_summary": "Agentic commerce and payments platform; AI recommends, a human approves, the system verifies.",
       "my_role": "Built solo for the Razorpay Buildathon, Track 01.",
@@ -89,9 +95,10 @@
       "deep_dive_id": "razorflow_ai"
     },
     {
+      "id": "career-copilot-ai",
       "name": "Career Copilot AI",
       "one_line_summary": "Resume auditing, interview prep and AI asset generation.",
-      "my_role": "Not stated in source; repo and live app listed.",
+      "my_role": "Not stated in source.",
       "tech_stack": ["Python", "FastAPI", "Firebase", "Firestore", "ChromaDB", "LLaMA via Groq", "Render"],
       "status": "Public repo, MIT license, 51 commits; live on Render.",
       "links": {"github": "https://github.com/tisha-varma/Career-Copilot", "live": "https://career-copilot-wbkk.onrender.com/"},
@@ -99,9 +106,10 @@
       "deep_dive_id": "career_copilot"
     },
     {
+      "id": "amazon-recommender",
       "name": "Amazon Video Games Explainable Recommendation System",
       "one_line_summary": "Compares SVD, KNN and NMF with a reason for every recommendation.",
-      "my_role": "Not stated in source; repo and live demo listed.",
+      "my_role": "Not stated in source.",
       "tech_stack": ["Python", "scikit-surprise", "pandas", "Streamlit"],
       "status": "Public repo, 16 commits; live Streamlit demo.",
       "links": {"github": "https://github.com/tisha-varma/Amazon-Recommendation-System", "live": "https://amazon-recommendation-system-games.streamlit.app/"},
@@ -109,6 +117,7 @@
       "deep_dive_id": "amazon_recommender"
     },
     {
+      "id": "pharmamate",
       "name": "PharmaMate",
       "one_line_summary": "Matches orders against handwritten prescriptions and suggests alternatives.",
       "my_role": "Built solo.",
@@ -119,6 +128,7 @@
       "deep_dive_id": "pharmamate"
     },
     {
+      "id": "ai-study-buddy",
       "name": "AI Study Buddy",
       "one_line_summary": "Local multi-agent learning assistant: explanation, quiz and graded feedback.",
       "my_role": "Not stated in source.",
@@ -129,6 +139,7 @@
       "deep_dive_id": "ai_study_buddy"
     },
     {
+      "id": "workchain",
       "name": "Workchain",
       "one_line_summary": "Ethereum DApp for freelance work with smart-contract escrow and on-chain reputation.",
       "my_role": "Not stated in source.",
@@ -139,6 +150,7 @@
       "deep_dive_id": "workchain"
     },
     {
+      "id": "herdefenders",
       "name": "HerDefenders",
       "one_line_summary": "AI women's safety system with pose-based threat detection on CCTV.",
       "my_role": "Founder.",
@@ -149,11 +161,12 @@
       "deep_dive_id": "other_projects"
     },
     {
+      "id": "other-projects",
       "name": "Other projects",
       "one_line_summary": "Smart Multi-Agent Daily Planner, Smart Attendance System, Data-Entry-Job-Automation and Hidden Battles.",
       "my_role": "Daily Planner was a team project with two teammates; other roles not stated.",
       "tech_stack": ["OpenCV", "machine learning", "Beautiful Soup", "Selenium"],
-      "status": "Status varies by project; see the other_projects deep dive.",
+      "status": "Varies; see deep dive.",
       "links": {"github": "https://github.com/tisha-varma/Data-Entry-Job-Automation"},
       "key_facts": [
         "Daily Planner: task-management, scheduling and execution agents; team of 3 (Tisha and two teammates)",
@@ -180,6 +193,18 @@
       "systems_and_practices": ["system design", "state machines", "idempotency", "concurrency-safe transactions", "replay protection", "pytest unit and integration testing", "Git/GitHub", "pull-request workflow", "technical documentation", "secure system design"],
       "ai_and_ml": ["scikit-learn", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Joblib", "Surprise", "clustering", "OpenCV", "MediaPipe", "OCR", "NLP", "embeddings (BGE)", "semantic search", "RAG", "prompt engineering", "LLM APIs (Groq, Gemini, Ollama)", "CrewAI multi-agent orchestration"],
       "ai_assisted_development_tools": ["Claude Code", "Cursor", "Antigravity"]
+    },
+    "group_ids": {
+      "proficiency_stated": "proficiency-stated",
+      "primary_language": "primary-language",
+      "other_languages": "other-languages",
+      "backend": "backend",
+      "frontend_and_interfaces": "frontend-and-interfaces",
+      "databases": "databases",
+      "cloud_and_deployment": "cloud-and-deployment",
+      "systems_and_practices": "systems-and-practices",
+      "ai_and_ml": "ai-and-ml",
+      "ai_assisted_development_tools": "ai-assisted-development-tools"
     }
   },
   "achievements": [
@@ -193,24 +218,25 @@
     "LinkedIn article on recursion (1 Dec 2025); 132 followers."
   ],
   "known_gaps": [
-    "Tisha has no full-time employment experience.",
-    "RazorFlow AI has no user authentication yet.",
-    "RazorFlow AI session state is held in memory, so only one server process can run.",
-    "RazorFlow AI LLM calls are blocking.",
-    "RazorFlow AI runs Razorpay in test mode.",
-    "The RazorFlow AI audit chain is tamper-evident rather than unbreakable: timestamps and reason text are not hashed, there is no secret key, and concurrent writes can fork it.",
-    "The RazorFlow AI \"without AI\" revenue figure is derived by subtracting upsell items, not from a controlled experiment.",
-    "PharmaMate asks the user to paste the Gemini API key into main.py.",
-    "Workchain contracts are for local demos and need an audit before mainnet use.",
-    "MySQL and PostgreSQL were used only on a few small past projects.",
-    "HerDefenders is currently not active, and the code is not public.",
-    "Amazon recommender: optimistic rating bias, cold start, a limited item pool, and approximate explanations for SVD and NMF."
+    "No full-time employment experience. [src 5.5]",
+    "RazorFlow AI has no user authentication. [src 6.1]",
+    "RazorFlow AI session state is held in memory, so only one server process can run. [src 6.1]",
+    "RazorFlow AI LLM calls are blocking. [src 6.1]",
+    "RazorFlow AI runs Razorpay in test mode. [src 6.1]",
+    "The RazorFlow AI audit chain is tamper-evident rather than unbreakable: timestamps and reason text are not hashed, there is no secret key, and concurrent writes can fork it. [src 6.1]",
+    "The RazorFlow AI \"without AI\" revenue figure is derived by subtracting upsell items, not from a controlled experiment. [src 6.1]",
+    "PharmaMate asks the user to paste the Gemini API key into main.py. [src 6.4]",
+    "Workchain contracts are for local demos and need an audit before mainnet use. [src 6.6]",
+    "MySQL and PostgreSQL were used only on a few small past projects. [src 7]",
+    "HerDefenders is not active, and the code is not public. [src 5.5, 6.7]",
+    "Amazon recommender: optimistic rating bias, cold start, a limited item pool, and approximate explanations for SVD and NMF. [src 6.3]"
   ],
   "private_do_not_share": ["phone number", "home address", "date of birth", "government ID numbers", "salary expectations", "anything not listed in public_contact"],
   "data_freshness": [
     {"item": "B.E. CPI", "value": "9.01 / 10", "as_of": "so far"},
     {"item": "INCF PR #44 status", "value": "OPEN", "as_of": "6 Nov 2026"},
     {"item": "INCF PR #61 status", "value": "OPEN", "as_of": "6 Nov 2026"},
+    {"item": "INCF pull-request tally", "value": "1 merged (#30), 1 approved (#90), 2 open (#44, #61), 1 closed duplicate (#29)", "as_of": "6 Nov 2026"},
     {"item": "Career Copilot usage", "value": "18 users, 31 resumes analyzed, 11 feedback entries", "as_of": "7 Nov 2026"}
   ]
 }
