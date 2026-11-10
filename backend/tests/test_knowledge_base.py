@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from app.prompt_builder import (
@@ -55,11 +56,14 @@ def test_core_has_every_required_section() -> None:
     assert not missing, f"core.json is missing: {', '.join(missing)}"
 
 
-def test_core_contains_no_placeholder_text() -> None:
+def test_knowledge_files_contain_no_placeholder_text() -> None:
     """A shipped knowledge base must not contain fake PLACEHOLDER: values."""
-    text = CORE_PATH.read_text(encoding="utf-8")
+    paths = [CORE_PATH, INDEX_PATH, *sorted(SECTIONS_DIR.glob("*.md"))]
 
-    assert "PLACEHOLDER:" not in text
+    for path in paths:
+        assert "PLACEHOLDER:" not in path.read_text(encoding="utf-8"), (
+            f"{path.name} contains PLACEHOLDER:"
+        )
 
 
 def test_core_token_estimate_stays_under_the_hard_limit() -> None:
@@ -117,3 +121,89 @@ def test_index_keywords_are_lowercase() -> None:
     for section_id, entry in index.items():
         for keyword in entry["keywords"]:
             assert keyword == keyword.lower(), f"{section_id!r} has a non-lowercase keyword: {keyword!r}"
+
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def test_every_project_has_a_unique_stable_id() -> None:
+    """Project ids are stable slugs and cannot collide."""
+    projects = load_core(CORE_PATH)["projects"]
+    project_ids = [project["id"] for project in projects]
+
+    assert len(project_ids) == len(set(project_ids)), f"Duplicate project id(s): {project_ids}"
+    for project_id in project_ids:
+        assert SLUG_PATTERN.match(project_id), f"Project id is not a stable slug: {project_id!r}"
+
+
+def test_every_experience_item_has_a_unique_stable_id() -> None:
+    """Every internship, contribution, and founder role has its own id."""
+    experience = load_core(CORE_PATH)["experience"]
+    experience_ids = [item["id"] for item in experience]
+
+    assert len(experience_ids) == len(set(experience_ids)), (
+        f"Duplicate experience id(s): {experience_ids}"
+    )
+    for experience_id in experience_ids:
+        assert SLUG_PATTERN.match(experience_id), (
+            f"Experience id is not a stable slug: {experience_id!r}"
+        )
+
+
+def test_every_skill_group_has_a_unique_stable_id() -> None:
+    """Each skill group in the source is addressable by one stable id."""
+    skills = load_core(CORE_PATH)["skills"]
+    group_ids = skills["group_ids"]
+    unrated_groups = set(skills["skills_listed_unrated"]) - {"note"}
+
+    assert set(group_ids) == {"proficiency_stated", *unrated_groups}
+    assert len(set(group_ids.values())) == len(group_ids), (
+        f"Duplicate skill group id(s): {group_ids}"
+    )
+    for group_id in group_ids.values():
+        assert SLUG_PATTERN.match(group_id), f"Skill group id is not a stable slug: {group_id!r}"
+
+
+def test_ids_are_unique_across_projects_experience_and_skills() -> None:
+    """One id namespace, so a future lookup can never be ambiguous."""
+    core = load_core(CORE_PATH)
+    all_ids = (
+        [project["id"] for project in core["projects"]]
+        + [item["id"] for item in core["experience"]]
+        + list(core["skills"]["group_ids"].values())
+    )
+
+    assert len(all_ids) == len(set(all_ids)), f"Duplicate id(s) across sections: {all_ids}"
+
+
+def test_projects_have_at_most_four_key_facts() -> None:
+    """Tier 1 stays a summary; detail belongs in the deep dives."""
+    for project in load_core(CORE_PATH)["projects"]:
+        assert len(project["key_facts"]) <= 4, (
+            f"{project['id']} has {len(project['key_facts'])} key facts; the cap is 4."
+        )
+
+
+def test_every_known_gap_points_to_a_source_section() -> None:
+    """Gaps are paraphrases of stated limits, each tied to the source."""
+    for gap in load_core(CORE_PATH)["known_gaps"]:
+        assert re.search(r"\[src \d", gap), f"Gap has no source pointer: {gap!r}"
+
+
+def test_data_freshness_covers_every_dated_source_fact() -> None:
+    """Dated statuses and usage numbers carry their as-of date."""
+    entries = {entry["item"]: entry for entry in load_core(CORE_PATH)["data_freshness"]}
+
+    assert entries["B.E. CPI"]["value"] == "9.01 / 10"
+    assert entries["B.E. CPI"]["as_of"] == "so far"
+
+    for item in ("INCF PR #44 status", "INCF PR #61 status"):
+        assert entries[item]["value"] == "OPEN"
+        assert entries[item]["as_of"] == "6 Nov 2026"
+
+    assert entries["INCF pull-request tally"]["as_of"] == "6 Nov 2026"
+    assert entries["Career Copilot usage"]["value"] == (
+        "18 users, 31 resumes analyzed, 11 feedback entries"
+    )
+    assert entries["Career Copilot usage"]["as_of"] == "7 Nov 2026"
+
