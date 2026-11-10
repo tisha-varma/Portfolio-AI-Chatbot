@@ -3,65 +3,30 @@
 The router never calls an LLM. It scores the latest user message against the
 keywords in ``knowledge/sections/index.json`` and falls back to the previous
 user message when the latest one has no keyword hit, which keeps short
-follow-ups on the same topic.
+follow-ups on the same topic. Assistant messages are never used for routing.
 """
 
 from __future__ import annotations
 
-import json
 import re
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-BACKEND_DIR: Path = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX_PATH: Path = BACKEND_DIR / "knowledge" / "sections" / "index.json"
+from app.knowledge_loader import (
+    SectionIndexError,
+    load_sections_index,
+)
 
-
-class KnowledgeRouterError(RuntimeError):
-    """Raised when the section index cannot be read or is malformed."""
+# Kept for callers that caught the router's original error name.
+KnowledgeRouterError = SectionIndexError
 
 
 def load_section_index(
-    index_path: str | Path = DEFAULT_INDEX_PATH,
+    index_path: str | Path | None = None,
 ) -> dict[str, dict[str, Any]]:
-    """Load and validate the section index.
-
-    Raises:
-        KnowledgeRouterError: If the file is missing, invalid JSON, or an entry
-            is missing its title, keywords, or description.
-    """
-    path = Path(index_path)
-    if not path.is_file():
-        raise KnowledgeRouterError(f"Section index not found: {path}")
-
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise KnowledgeRouterError(
-            f"Invalid JSON in section index {path} "
-            f"(line {exc.lineno}, column {exc.colno}): {exc.msg}"
-        ) from exc
-
-    if not isinstance(data, dict) or not data:
-        raise KnowledgeRouterError(f"Section index {path} must be a non-empty JSON object.")
-
-    for section_id, entry in data.items():
-        if not isinstance(entry, dict):
-            raise KnowledgeRouterError(f"Section index entry {section_id!r} must be an object.")
-        if not isinstance(entry.get("title"), str) or not entry["title"].strip():
-            raise KnowledgeRouterError(f"Section index entry {section_id!r} has no title.")
-        if not isinstance(entry.get("description"), str) or not entry["description"].strip():
-            raise KnowledgeRouterError(f"Section index entry {section_id!r} has no description.")
-        keywords = entry.get("keywords")
-        if not isinstance(keywords, list) or not all(
-            isinstance(keyword, str) and keyword.strip() for keyword in keywords
-        ):
-            raise KnowledgeRouterError(
-                f"Section index entry {section_id!r} must have a list of non-empty keywords."
-            )
-
-    return data
+    """Read and validate the section index through the shared loader."""
+    return load_sections_index(index_path)
 
 
 def _compile_keyword_patterns(
@@ -111,7 +76,7 @@ def select_sections(
     messages: Sequence[Mapping[str, Any]],
     max_sections: int = 2,
     *,
-    index_path: str | Path = DEFAULT_INDEX_PATH,
+    index_path: str | Path | None = None,
 ) -> list[str]:
     """Return the best-matching deep-dive section ids for a conversation.
 

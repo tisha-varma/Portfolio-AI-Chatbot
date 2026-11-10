@@ -15,6 +15,7 @@ from app import config
 from app.config import Settings
 from app.prompt_builder import (
     DEEP_DIVE_HEADING,
+    VISITOR_CONTEXT_HEADING,
     ProfileParseError,
     ProfileValidationError,
     PromptBuildError,
@@ -136,11 +137,13 @@ def build(
     section_ids: list[str] | None = None,
     settings: Settings | None = None,
     *,
+    extra_context: str | None = None,
     use_cache: bool = True,
 ) -> str:
     """Build a prompt for a temp project with default test settings."""
     return build_system_prompt(
         section_ids,
+        extra_context,
         prompt_path=prompt_path,
         core_path=core_path,
         sections_dir=sections_dir,
@@ -312,7 +315,7 @@ def test_placeholder_values_are_logged_as_warning(
         tmp_path, core=make_core(identity=identity)
     )
 
-    with caplog.at_level(logging.WARNING, logger="app.prompt_builder"):
+    with caplog.at_level(logging.WARNING, logger="app.knowledge_loader"):
         build(prompt_path, core_path, sections_dir, index_path, use_cache=False)
 
     assert "PLACEHOLDER:" in caplog.text
@@ -475,6 +478,181 @@ def test_token_estimates_are_logged(
 
     assert "core ~" in caplog.text
     assert "core+sections ~" in caplog.text
+
+
+def test_extra_context_is_appended_under_untrusted_heading(tmp_path: Path) -> None:
+    """Visitor text is appended literally under an explicitly untrusted heading."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+    context = "Job description: needs {{OWNER_NAME}} and Python."
+
+    result = build(
+        prompt_path,
+        core_path,
+        sections_dir,
+        index_path,
+        extra_context=context,
+        use_cache=False,
+    )
+
+    assert VISITOR_CONTEXT_HEADING in result
+    assert result.index(VISITOR_CONTEXT_HEADING) > result.index("Project Alpha")
+    assert context in result
+    # Visitor text is never templated, so the placeholder survives untouched.
+    assert result.count("Owner: Tisha") == 1
+
+
+def test_no_visitor_heading_without_extra_context(tmp_path: Path) -> None:
+    """Core-only prompts carry no untrusted-context section."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+
+    result = build(prompt_path, core_path, sections_dir, index_path, use_cache=False)
+
+    assert VISITOR_CONTEXT_HEADING not in result
+
+
+def test_extra_context_is_part_of_the_cache_key(tmp_path: Path) -> None:
+    """Two different job descriptions never share a cached prompt."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+
+    first = build(
+        prompt_path,
+        core_path,
+        sections_dir,
+        index_path,
+        extra_context="CTX-ALPHA role",
+    )
+    second = build(
+        prompt_path,
+        core_path,
+        sections_dir,
+        index_path,
+        extra_context="CTX-BETA role",
+    )
+
+    assert "CTX-ALPHA role" in first
+    assert "CTX-BETA role" not in first
+    assert "CTX-BETA role" in second
+    assert "CTX-ALPHA role" not in second
+
+
+def test_cache_reflects_changed_contact_email(tmp_path: Path) -> None:
+    """A different public contact email must rebuild the prompt."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+
+    first = build(
+        prompt_path,
+        core_path,
+        sections_dir,
+        index_path,
+        settings=make_settings(contact_email="first@example.com"),
+    )
+    second = build(
+        prompt_path,
+        core_path,
+        sections_dir,
+        index_path,
+        settings=make_settings(contact_email="second@example.com"),
+    )
+
+    assert "first@example.com" in first
+    assert "second@example.com" in second
+    assert "first@example.com" not in second
+
+
+def test_cache_is_invalidated_by_index_edits(tmp_path: Path) -> None:
+    """Editing the section index is picked up without a restart."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+
+    first = build(prompt_path, core_path, sections_dir, index_path, ["alpha"])
+    assert "## Project Alpha Deep Dive" in first
+
+    renamed = {
+        "alpha": {
+            **SECTION_INDEX["alpha"],
+            "title": "Renamed Alpha Deep Dive",
+        }
+    }
+    index_path.write_text(json.dumps(renamed), encoding="utf-8")
+    bumped = index_path.stat().st_mtime_ns + 1_000_000_000
+    os.utime(index_path, ns=(bumped, bumped))
+
+    second = build(prompt_path, core_path, sections_dir, index_path, ["alpha"])
+    assert "## Renamed Alpha Deep Dive" in second
+    assert "## Project Alpha Deep Dive" not in second
+
+
+def test_cache_is_invalidated_by_template_edits(tmp_path: Path) -> None:
+    """Editing the Markdown template is picked up without a restart."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(tmp_path)
+
+    first = build(prompt_path, core_path, sections_dir, index_path)
+    assert "Template v1" not in first
+
+    prompt_path.write_text(
+        PROMPT_TEMPLATE + "Template v2\n", encoding="utf-8"
+    )
+    bumped = prompt_path.stat().st_mtime_ns + 1_000_000_000
+    os.utime(prompt_path, ns=(bumped, bumped))
+
+    second = build(prompt_path, core_path, sections_dir, index_path)
+    assert "Template v2" in second
+
+
+def test_missing_section_is_a_profile_parse_error(tmp_path: Path) -> None:
+    """The missing-section failure is catchable as a profile parse error."""
+    core = make_core()
+    del core["known_gaps"]
+    prompt_path, core_path, sections_dir, index_path = write_project_files(
+        tmp_path, core=core
+    )
+
+    with pytest.raises(ProfileParseError, match="known_gaps"):
+        build(prompt_path, core_path, sections_dir, index_path, use_cache=False)
+
+
+def test_production_rejects_placeholder_in_a_section(tmp_path: Path) -> None:
+    """A deep dive cannot ship with PLACEHOLDER: text in production."""
+    prompt_path, core_path, sections_dir, index_path = write_project_files(
+        tmp_path, section_text="PLACEHOLDER: alpha story"
+    )
+
+    with pytest.raises(ProfileValidationError, match="PLACEHOLDER"):
+        build(
+            prompt_path,
+            core_path,
+            sections_dir,
+            index_path,
+            ["alpha"],
+            settings=make_settings(environment="production"),
+            use_cache=False,
+        )
+
+
+def test_knowledge_dir_setting_controls_the_default_paths(tmp_path: Path) -> None:
+    """KNOWLEDGE_DIR replaces the default core, index, and section locations."""
+    knowledge_dir = tmp_path / "knowledge"
+    sections_dir = knowledge_dir / "sections"
+    sections_dir.mkdir(parents=True)
+    (knowledge_dir / "core.json").write_text(
+        json.dumps(make_core(summary="Core loaded from KNOWLEDGE_DIR.")),
+        encoding="utf-8",
+    )
+    (sections_dir / "index.json").write_text(json.dumps(SECTION_INDEX), encoding="utf-8")
+    (sections_dir / "alpha.md").write_text(
+        "ALPHA FROM KNOWLEDGE_DIR", encoding="utf-8"
+    )
+    prompt_path = tmp_path / "system_prompt.md"
+    prompt_path.write_text(PROMPT_TEMPLATE, encoding="utf-8")
+
+    result = build_system_prompt(
+        ["alpha"],
+        prompt_path=prompt_path,
+        settings=make_settings(knowledge_dir=knowledge_dir),
+        use_cache=False,
+    )
+
+    assert "Core loaded from KNOWLEDGE_DIR." in result
+    assert "ALPHA FROM KNOWLEDGE_DIR" in result
 
 
 def test_get_settings_fails_fast_without_api_key(
