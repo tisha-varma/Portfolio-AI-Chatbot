@@ -52,18 +52,44 @@ class Settings(BaseSettings):
         min_length=1,
         description="Primary Groq model id. Required and never hardcoded.",
     )
+    groq_fallback_models: list[str] = Field(
+        default_factory=list, description="Fallback Groq model ids, tried in order."
+    )
+    temperature: float = Field(default=0.2, ge=0, le=2, description="Sampling temperature.")
+    max_output_tokens_chat: int = Field(default=600, gt=0, description="Chat token cap.")
+    max_output_tokens_fit: int = Field(default=1400, gt=0, description="JD fit token cap.")
+    max_message_chars: int = Field(default=1500, gt=0, description="Maximum user message length.")
+    max_history_messages: int = Field(default=8, gt=0, description="Messages sent to the model.")
+    max_history_chars: int = Field(default=6000, gt=0, description="History character budget.")
+    max_jd_chars: int = Field(default=8000, gt=0, description="Maximum job description length.")
+    max_upload_bytes: int = Field(default=2_000_000, gt=0, description="Maximum upload size.")
+    rate_limit_per_minute: int = Field(default=10, gt=0, description="Chat requests per IP/minute.")
+    rate_limit_fit_per_minute: int = Field(
+        default=3, gt=0, description="JD fit requests per IP/minute."
+    )
+    rate_limit_per_day_per_ip: int = Field(
+        default=60, gt=0, description="Requests per IP per day."
+    )
+    global_daily_request_cap: int = Field(
+        default=400, gt=0, description="Daily requests across all visitors."
+    )
+    max_concurrent_llm_calls: int = Field(default=4, gt=0, description="Concurrent model calls.")
     allowed_origins: str = Field(
         default=DEFAULT_ALLOWED_ORIGINS,
         description="Comma-separated origins allowed to call the API.",
     )
-    max_jd_chars: int = Field(default=8000, gt=0, description="Maximum job description length.")
-    max_message_chars: int = Field(default=1500, gt=0, description="Maximum user message length.")
     contact_email: str = Field(min_length=3, description="Public contact email shown to visitors.")
     owner_name: str = Field(default="Tisha", min_length=1, description="Name used in the prompt.")
     environment: Literal["development", "production"] = Field(
-        default="development",
-        description="Deployment stage; production rejects placeholder knowledge.",
+        default="development", description="Deployment stage."
     )
+    trusted_proxy: bool = Field(default=False, description="Trust X-Forwarded-For headers.")
+    maintenance_mode: bool = Field(default=False, description="Reject requests with 503.")
+    knowledge_dir: Path = Field(
+        default=PROJECT_ROOT / "backend" / "knowledge", description="Knowledge base root."
+    )
+    serve_frontend: bool = Field(default=True, description="Serve the static frontend.")
+    public_url: str = Field(default="", description="Public origin for social preview tags.")
 
     @field_validator("groq_api_keys", mode="before")
     @classmethod
@@ -96,6 +122,28 @@ class Settings(BaseSettings):
         if len(set(keys)) != len(keys):
             raise ValueError("duplicate Groq API keys are not allowed")
         return [SecretStr(key) for key in keys]
+
+    @field_validator("groq_fallback_models", mode="before")
+    @classmethod
+    def _parse_fallback_models(cls, value: object) -> list[str]:
+        """Parse an optional comma-separated list, deduplicating in order."""
+        if value is None:
+            return []
+        if isinstance(value, str):
+            candidates: list[object] = value.split(",")
+        elif isinstance(value, (list, tuple)):
+            candidates = list(value)
+        else:
+            raise ValueError("fallback models must be a comma-separated string or a list")
+
+        models: list[str] = []
+        for candidate in candidates:
+            if not isinstance(candidate, str):
+                raise ValueError("each fallback model must be text")
+            model = candidate.strip()
+            if model and model not in models:
+                models.append(model)
+        return models
 
     @field_validator("environment", mode="before")
     @classmethod
@@ -135,6 +183,42 @@ class Settings(BaseSettings):
             raise ValueError("must be a valid email address with a valid domain")
         return cleaned
 
+    @field_validator("trusted_proxy", "maintenance_mode", "serve_frontend", mode="before")
+    @classmethod
+    def _parse_bool(cls, value: object) -> bool:
+        """Accept only explicit boolean spellings, never arbitrary truthy text."""
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int) and value in (0, 1):
+            return bool(value)
+        if isinstance(value, str):
+            normalised = value.strip().lower()
+            if normalised in {"true", "1", "yes", "on"}:
+                return True
+            if normalised in {"false", "0", "no", "off"}:
+                return False
+        raise ValueError("must be a boolean (true/false, yes/no, on/off, 1/0)")
+
+    @field_validator("knowledge_dir", mode="after")
+    @classmethod
+    def _resolve_knowledge_dir(cls, value: Path) -> Path:
+        """Resolve relative knowledge paths against the project root."""
+        resolved = value if value.is_absolute() else PROJECT_ROOT / value
+        return resolved.resolve()
+
+    @field_validator("public_url", mode="after")
+    @classmethod
+    def _validate_public_url(cls, value: str) -> str:
+        """Allow an empty value or an http(s) origin, without a trailing slash."""
+        cleaned = value.strip()
+        if not cleaned:
+            return ""
+        if any(character.isspace() for character in cleaned):
+            raise ValueError("must be a URL without spaces")
+        if not cleaned.startswith(("http://", "https://")):
+            raise ValueError("must start with http:// or https://")
+        return cleaned.rstrip("/")
+
     @property
     def allowed_origins_list(self) -> list[str]:
         """Return ALLOWED_ORIGINS split into a clean list for CORS setup."""
@@ -156,10 +240,26 @@ def settings_summary(settings: Settings | None = None) -> dict[str, object]:
         "environment": resolved.environment,
         "groq_api_key_count": len(resolved.groq_api_keys),
         "groq_model": resolved.groq_model,
-        "allowed_origins": resolved.allowed_origins_list,
-        "max_jd_chars": resolved.max_jd_chars,
+        "groq_fallback_models": list(resolved.groq_fallback_models),
+        "temperature": resolved.temperature,
+        "max_output_tokens_chat": resolved.max_output_tokens_chat,
+        "max_output_tokens_fit": resolved.max_output_tokens_fit,
         "max_message_chars": resolved.max_message_chars,
-        "owner_name": resolved.owner_name,
+        "max_history_messages": resolved.max_history_messages,
+        "max_history_chars": resolved.max_history_chars,
+        "max_jd_chars": resolved.max_jd_chars,
+        "max_upload_bytes": resolved.max_upload_bytes,
+        "rate_limit_per_minute": resolved.rate_limit_per_minute,
+        "rate_limit_fit_per_minute": resolved.rate_limit_fit_per_minute,
+        "rate_limit_per_day_per_ip": resolved.rate_limit_per_day_per_ip,
+        "global_daily_request_cap": resolved.global_daily_request_cap,
+        "max_concurrent_llm_calls": resolved.max_concurrent_llm_calls,
+        "allowed_origins": resolved.allowed_origins_list,
+        "trusted_proxy": resolved.trusted_proxy,
+        "maintenance_mode": resolved.maintenance_mode,
+        "knowledge_dir": str(resolved.knowledge_dir),
+        "serve_frontend": resolved.serve_frontend,
+        "public_url": resolved.public_url,
     }
 
 
