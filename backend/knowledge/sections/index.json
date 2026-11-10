@@ -9,18 +9,27 @@
       "payment",
       "payments",
       "commerce",
+      "agentic",
       "agentic commerce",
       "shopping agent",
       "shopping",
       "cart",
       "checkout",
       "approval",
+      "human approval",
       "policy engine",
+      "audit",
       "audit chain",
       "webhook",
       "buildathon",
+      "razorpay buildathon",
       "paise",
-      "session state"
+      "session state",
+      "pytest",
+      "fastapi",
+      "sqlalchemy",
+      "next.js",
+      "typescript"
     ]
   },
   "career_copilot": {
@@ -36,6 +45,7 @@
       "interview preparation",
       "interview questions",
       "cover letter",
+      "cover letters",
       "career intelligence",
       "job search",
       "ats",
@@ -47,6 +57,13 @@
       "chromadb",
       "firestore",
       "firebase",
+      "firebase auth",
+      "cloudinary",
+      "reportlab",
+      "pdf",
+      "llama",
+      "llama 3.3",
+      "groq",
       "render"
     ]
   },
@@ -55,6 +72,7 @@
     "description": "Compares SVD, KNN and NMF on Amazon Video Games data with human-readable explanations.",
     "keywords": [
       "amazon",
+      "amazon reviews",
       "recommendation",
       "recommendations",
       "recommender",
@@ -63,14 +81,18 @@
       "knn",
       "nmf",
       "collaborative filtering",
+      "matrix factorization",
       "video games",
       "scikit-surprise",
       "surprise",
       "cold start",
       "ndcg",
       "rmse",
+      "precision",
+      "recall",
       "explainable",
-      "explainability"
+      "explainability",
+      "streamlit"
     ]
   },
   "pharmamate": {
@@ -85,10 +107,15 @@
       "medicine",
       "medicines",
       "gemini",
+      "ocr",
       "tkinter",
+      "pandas",
+      "pillow",
       "inventory",
       "symptom",
-      "symptoms"
+      "symptoms",
+      "hackathon",
+      "google girl hackathon"
     ]
   },
   "ai_study_buddy": {
@@ -101,10 +128,14 @@
       "crewai",
       "ollama",
       "mistral",
+      "local llm",
+      "offline",
+      "multi-agent",
       "learning assistant",
       "topic agent",
       "quiz agent",
-      "feedback agent"
+      "feedback agent",
+      "streamlit"
     ]
   },
   "workchain": {
@@ -115,6 +146,7 @@
       "blockchain",
       "ethereum",
       "solidity",
+      "solidity 0.8.0",
       "smart contract",
       "smart contracts",
       "freelance",
@@ -123,6 +155,9 @@
       "metamask",
       "ganache",
       "web3",
+      "web3.py",
+      "flask",
+      "sqlite",
       "dapp",
       "decentralised",
       "decentralized"
@@ -135,6 +170,7 @@
       "incf",
       "knowledge-space",
       "knowledge space",
+      "knowledge-space ai agent",
       "open source",
       "open-source",
       "pull request",
@@ -145,8 +181,11 @@
       "upstream",
       "neuroscience",
       "langgraph",
+      "gemini",
       "contributor",
       "code review",
+      "issue",
+      "fix",
       "duplicate"
     ]
   },
@@ -159,13 +198,16 @@
       "women safety",
       "cctv",
       "mediapipe",
+      "opencv",
       "pose detection",
       "daily planner",
       "planner",
       "multi-agent",
+      "kaggle",
       "attendance",
       "smart attendance",
       "facial recognition",
+      "machine learning",
       "data-entry",
       "data entry",
       "automation",
@@ -173,6 +215,7 @@
       "selenium",
       "beautiful soup",
       "google form",
+      "google sheets",
       "hidden battles",
       "mental health",
       "techno sarita"
