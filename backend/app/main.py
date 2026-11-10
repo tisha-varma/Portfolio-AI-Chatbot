@@ -45,7 +45,7 @@ def _get_client(settings: Settings) -> Any:
     """Create the Groq client lazily so importing this module needs no key."""
     from groq import Groq
 
-    return Groq(api_key=settings.groq_api_key.get_secret_value())
+    return Groq(api_key=settings.groq_api_keys[0].get_secret_value())
 
 
 @app.get("/health")

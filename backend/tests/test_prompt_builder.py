@@ -94,7 +94,7 @@ def make_core(**overrides: Any) -> dict[str, Any]:
 def make_settings(**overrides: Any) -> Settings:
     """Build settings without touching the environment or a .env file."""
     values: dict[str, Any] = {
-        "groq_api_key": "test-groq-key",
+        "groq_api_keys": ["test-groq-key"],
         "groq_model": "test-groq-model",
         "contact_email": "tisha@example.com",
         "owner_name": "Tisha",
@@ -480,7 +480,8 @@ def test_token_estimates_are_logged(
 def test_get_settings_fails_fast_without_api_key(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """A missing GROQ_API_KEY produces one clear RuntimeError."""
+    """A missing key produces one clear RuntimeError naming GROQ_API_KEYS."""
+    monkeypatch.delenv("GROQ_API_KEYS", raising=False)
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     monkeypatch.setenv("GROQ_MODEL", "test-groq-model")
     monkeypatch.setenv("CONTACT_EMAIL", "tisha@example.com")
@@ -488,7 +489,7 @@ def test_get_settings_fails_fast_without_api_key(
 
     config.get_settings.cache_clear()
     try:
-        with pytest.raises(RuntimeError, match="GROQ_API_KEY"):
+        with pytest.raises(RuntimeError, match="GROQ_API_KEYS"):
             config.get_settings()
     finally:
         config.get_settings.cache_clear()
@@ -524,9 +525,9 @@ def test_api_key_loads_from_dotenv_as_secret(
         contact_email="tisha@example.com",
     )
 
-    assert settings.groq_api_key.get_secret_value() == "key-from-dotenv"
+    assert settings.groq_api_keys[0].get_secret_value() == "key-from-dotenv"
     assert "key-from-dotenv" not in repr(settings)
-    assert str(settings.groq_api_key) == "**********"
+    assert str(settings.groq_api_keys[0]) == "**********"
 
 
 def test_blank_api_key_is_rejected() -> None:
@@ -534,7 +535,7 @@ def test_blank_api_key_is_rejected() -> None:
     with pytest.raises(ValidationError):
         Settings(
             _env_file=None,
-            groq_api_key="   ",
+            groq_api_keys="   ",
             groq_model="test-groq-model",
             contact_email="tisha@example.com",
         )
