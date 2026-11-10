@@ -86,14 +86,18 @@ cp .env.example .env
 
 Then edit `portfolio-chatbot/.env` and set at least:
 
-- `GROQ_API_KEY` - real key from <https://console.groq.com/keys>
-- `GROQ_MODEL` - the exact model id you want to use
+- `GROQ_API_KEYS` - one or more real keys from
+  <https://console.groq.com/keys>, comma-separated. The legacy
+  `GROQ_API_KEY` variable is still accepted as a fallback.
+- `GROQ_MODEL` - the exact primary model id you want to use
 - `CONTACT_EMAIL` - the public address visitors should use
 
 The project `.env` is the only dotenv file loaded; its path is derived from
 `config.py`, so it works from any working directory. Real environment
-variables override it. The file is gitignored, and `groq_api_key` is stored as
-a `SecretStr`, so it renders as `**********` in logs and tracebacks.
+variables override it. The file is gitignored, and every key is stored as a
+`SecretStr`, so keys render as `**********` in `repr()` and `str()`. Use
+`settings_summary()` for logging: it reports the key count and model names,
+never key text.
 
 `get_settings()` raises a `RuntimeError` naming any missing variable, so a
 misconfigured environment fails immediately instead of at request time.
@@ -301,16 +305,38 @@ prompt must keep the three placeholders (`{{OWNER_NAME}}`, `{{CONTACT_EMAIL}}`,
 
 ## Configuration reference
 
+Every setting is validated at startup. Invalid values fail fast with a message
+that names the variable but never includes secret values. Settings defined for
+later stages are already validated here and will be consumed as those features
+land.
+
 | Variable | Required | Default | Purpose |
 | --- | --- | --- | --- |
-| `GROQ_API_KEY` | yes | - | Groq authentication, stored as `SecretStr` |
-| `GROQ_MODEL` | yes | - | Model id, never hardcoded |
+| `GROQ_API_KEYS` | yes (or legacy `GROQ_API_KEY`) | - | Comma-separated Groq keys, stored as a `SecretStr` list |
+| `GROQ_MODEL` | yes | - | Primary model id, never hardcoded |
+| `GROQ_FALLBACK_MODELS` | no | empty | Comma-separated fallback model ids |
+| `TEMPERATURE` | no | `0.2` | Sampling temperature, 0-2 |
+| `MAX_OUTPUT_TOKENS_CHAT` | no | `600` | Chat reply token cap |
+| `MAX_OUTPUT_TOKENS_FIT` | no | `1400` | JD fit token cap |
+| `MAX_MESSAGE_CHARS` | no | `1500` | Single message length limit |
+| `MAX_HISTORY_MESSAGES` | no | `8` | Recent messages kept in the prompt |
+| `MAX_HISTORY_CHARS` | no | `6000` | History character budget |
+| `MAX_JD_CHARS` | no | `8000` | Job description length limit |
+| `MAX_UPLOAD_BYTES` | no | `2000000` | Uploaded file size limit |
+| `RATE_LIMIT_PER_MINUTE` | no | `10` | Chat requests per IP per minute |
+| `RATE_LIMIT_FIT_PER_MINUTE` | no | `3` | Fit requests per IP per minute |
+| `RATE_LIMIT_PER_DAY_PER_IP` | no | `60` | Requests per IP per day |
+| `GLOBAL_DAILY_REQUEST_CAP` | no | `400` | Requests across all visitors per day |
+| `MAX_CONCURRENT_LLM_CALLS` | no | `4` | Concurrent model calls |
+| `ENVIRONMENT` | no | `development` | `production` rejects placeholder knowledge and empty projects/skills |
+| `TRUSTED_PROXY` | no | `false` | Trust `X-Forwarded-For` from the proxy |
+| `MAINTENANCE_MODE` | no | `false` | Return 503 while maintenance is in progress |
+| `KNOWLEDGE_DIR` | no | `backend/knowledge` | Knowledge base root |
+| `SERVE_FRONTEND` | no | `true` | Serve the static frontend from FastAPI |
+| `PUBLIC_URL` | no | empty | Public origin for social preview tags |
 | `ALLOWED_ORIGINS` | no | localhost:5173, localhost:3000 | CORS origins, comma-separated |
-| `MAX_JD_CHARS` | no | 8000 | Job description length limit |
-| `MAX_MESSAGE_CHARS` | no | 1500 | Single message length limit |
 | `CONTACT_EMAIL` | yes | - | Only contact detail the bot may share |
 | `OWNER_NAME` | no | `Tisha` | Name injected into the prompt |
-| `ENVIRONMENT` | no | `development` | `production` rejects placeholder knowledge and empty projects/skills |
 
 ## Next phases (not implemented here)
 

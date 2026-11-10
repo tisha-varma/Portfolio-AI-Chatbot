@@ -19,7 +19,7 @@ from app.config import Settings  # noqa: E402
 def make_settings(**overrides: Any) -> Settings:
     """Build settings without reading the project .env."""
     values: dict[str, Any] = {
-        "groq_api_key": "test-groq-key",
+        "groq_api_keys": ["test-groq-key"],
         "groq_model": "test-groq-model",
         "contact_email": "tisha@example.com",
     }
