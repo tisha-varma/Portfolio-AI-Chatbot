@@ -57,6 +57,12 @@ def test_assistant_messages_are_never_used_for_routing() -> None:
     assert select_sections(messages) == []
 
 
+def test_no_user_messages_returns_no_sections() -> None:
+    """A conversation with no user turn routes nowhere."""
+    assert select_sections([]) == []
+    assert select_sections([assistant("Tell me about RazorFlow payments.")]) == []
+
+
 def test_latest_user_hit_takes_priority_over_previous() -> None:
     """A keyword hit in the latest message wins over the earlier topic."""
     messages = [
