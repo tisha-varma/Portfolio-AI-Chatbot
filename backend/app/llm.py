@@ -165,6 +165,69 @@ class LLMClient:
             "No Groq model/key combination is currently available."
         )
 
+    async def stream_chat(
+        self,
+        messages: Sequence[Mapping[str, Any]],
+        max_tokens: int,
+        temperature: float,
+    ) -> AsyncGenerator[str, None]:
+        """Yield reply text, failing over only before the first text chunk.
+
+        Once any text has been yielded, a later failure raises
+        :class:`StreamInterrupted` instead of retrying, because retrying would
+        duplicate or restart the visitor's answer.
+        """
+        async with self._semaphore:
+            async for key_index, model in self._attempts():
+                client = await self._client_for(key_index)
+                stream: Any = None
+                yielded_text = False
+
+                try:
+                    async with asyncio.timeout(self._first_token_timeout):
+                        stream = await client.chat.completions.create(
+                            model=model,
+                            messages=list(messages),
+                            max_tokens=max_tokens,
+                            temperature=temperature,
+                            stream=True,
+                        )
+
+                    iterator = stream.__aiter__()
+                    first_chunk = True
+                    while True:
+                        try:
+                            if first_chunk:
+                                async with asyncio.timeout(self._first_token_timeout):
+                                    chunk = await iterator.__anext__()
+                                first_chunk = False
+                            else:
+                                chunk = await iterator.__anext__()
+                        except StopAsyncIteration:
+                            return
+
+                        text = _chunk_text(chunk)
+                        if not text:
+                            continue
+                        yielded_text = True
+                        yield text
+                except Exception as exc:  # noqa: BLE001 - upstream errors vary
+                    if yielded_text:
+                        raise StreamInterrupted(
+                            "The language model stream was interrupted."
+                        ) from exc
+                    if await self._handle_failure(exc, key_index, model):
+                        continue
+                    raise LLMError(
+                        "The language model stream could not be started."
+                    ) from exc
+                finally:
+                    await _close_stream(stream)
+
+        raise LLMUnavailableError(
+            "No Groq model/key combination is currently available."
+        )
+
     async def _attempts(self) -> AsyncGenerator[tuple[int, str], None]:
         """Yield available ``(key_index, model)`` pairs in attempt order."""
         key_order = await self._claim_key_order()
@@ -336,10 +399,36 @@ def _retry_after_seconds(exc: BaseException) -> float | None:
     return max(0.0, (when - datetime.now(timezone.utc)).total_seconds())
 
 
+async def _close_stream(stream: Any) -> None:
+    """Close an SDK stream when possible, ignoring cleanup failures."""
+    if stream is None:
+        return
+    aclose = getattr(stream, "aclose", None)
+    if aclose is None:
+        return
+    try:
+        await aclose()
+    except Exception:  # noqa: BLE001 - cleanup must not mask the real failure
+        pass
+
+
 @lru_cache(maxsize=1)
 def get_llm_client() -> LLMClient:
     """Return the process-wide client so cooldowns and rotation are shared."""
     return LLMClient(get_settings())
+
+
+async def stream_chat(
+    messages: Sequence[Mapping[str, Any]],
+    max_tokens: int,
+    temperature: float,
+    *,
+    client: LLMClient | None = None,
+) -> AsyncGenerator[str, None]:
+    """Yield reply text using the shared client or an injected one."""
+    active = client if client is not None else get_llm_client()
+    async for chunk in active.stream_chat(messages, max_tokens, temperature):
+        yield chunk
 
 
 async def complete_chat(
