@@ -4,14 +4,17 @@ from __future__ import annotations
 
 import logging
 import os
+import uuid
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import DEFAULT_ALLOWED_ORIGINS, Settings, get_settings
 from app.knowledge_loader import load_core, load_sections_index
+from app.logging_setup import setup_logging
 from app.routes_chat import router as chat_router
+from app.security import INTERNAL_MESSAGE, SecurityMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +44,7 @@ def _cors_origins(settings: Settings | None) -> list[str]:
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the FastAPI app, optionally bound to explicit settings."""
+    setup_logging()
     resolved_settings = settings if settings is not None else get_optional_settings()
     application = FastAPI(title="Portfolio AI Chatbot", version="0.2.0")
 
@@ -53,8 +57,33 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         expose_headers=["X-Request-ID"],
         max_age=600,
     )
+    # Added last so it is the outermost middleware and covers every response.
+    application.add_middleware(SecurityMiddleware, settings=resolved_settings)
 
     application.include_router(chat_router)
+
+    @application.exception_handler(Exception)
+    async def unhandled_error(request: Request, exc: Exception) -> JSONResponse:
+        """Return a generic body with a request id; keep details in logs."""
+        request_id = getattr(request.state, "request_id", None) or uuid.uuid4().hex
+        logger.error(
+            "Unhandled application error",
+            exc_info=(type(exc), exc, exc.__traceback__),
+            extra={
+                "request_id": request_id,
+                "route": request.url.path,
+                "status": 500,
+                "error_type": type(exc).__name__,
+            },
+        )
+        return JSONResponse(
+            status_code=500,
+            content={
+                "code": "internal",
+                "message": INTERNAL_MESSAGE,
+                "request_id": request_id,
+            },
+        )
 
     @application.get("/health")
     def health() -> dict[str, str]:

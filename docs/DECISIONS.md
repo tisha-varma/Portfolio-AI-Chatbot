@@ -66,3 +66,53 @@ reversed, record the reversal as its own entry.
   keeps operations simple. Serving the UI and API from the same origin removes
   CORS configuration, and avoiding a Node toolchain removes a build pipeline
   and its dependency surface without losing any capability the UI needs.
+
+### 2026-11-14 - Right-most forwarded hop for client IPs
+
+- **Decision:** Use the direct peer address by default. Only when
+  `TRUSTED_PROXY=true` does the server read `X-Forwarded-For`, and it takes the
+  right-most valid hop (the address appended by the trusted proxy closest to
+  the app).
+- **Alternatives considered:** Always trusting the left-most header value;
+  trusting every hop; requiring a configured proxy CIDR list.
+- **Reason:** A client can spoof any header it sends, so forwarded headers are
+  ignored unless a trusted proxy is explicitly configured. With one trusted
+  reverse proxy, the right-most hop is the address that proxy actually saw.
+  Using the left-most value by default would let visitors bypass per-IP limits.
+
+### 2026-11-14 - In-memory sliding windows for abuse protection
+
+- **Decision:** Per-IP minute and day limits and the global daily cap are kept
+  in process memory as sliding windows. The global counter resets by UTC date;
+  per-IP buckets expire after their window and are swept every minute.
+- **Alternatives considered:** A Redis or database-backed counter; fixed
+  one-minute buckets; relying only on the hosting provider's limits.
+- **Reason:** The service runs as a single Render instance, so in-memory state is
+  sufficient and adds no network dependency or cost. Sliding windows avoid the
+  burst-at-the-boundary problem of fixed buckets. A restart resets the counters,
+  which is acceptable because the free Groq quota is the resource being
+  protected, not billing state.
+
+### 2026-11-14 - Strict CSP instead of inline frontend code
+
+- **Decision:** Every response carries a Content-Security-Policy with
+  `default-src 'self'`, `script-src 'self'`, and `style-src 'self'`. The
+  frontend must ship external CSS and JavaScript files and no inline handlers.
+- **Alternatives considered:** Allowing `'unsafe-inline'`; a per-response nonce.
+- **Reason:** The frontend is fully controlled and static, so it can meet the
+  strict policy without a build step. Avoiding inline code removes the most
+  common cross-site scripting sink. A nonce would add template rewriting for no
+  benefit when no inline code is needed.
+
+### 2026-11-14 - JSON logs carry metadata, never visitor text
+
+- **Decision:** Application logs are one JSON object per line and include the
+  request id, route, status, duration, message count, and error type. Message
+  content is never logged.
+- **Alternatives considered:** Plain-text logs; logging full prompts for
+  debugging; relying on the hosting provider's request logs only.
+- **Reason:** Prompts can contain personal or confidential text from visitors
+  (for example, a pasted job description). Metadata is enough to diagnose
+  latency and failures without retaining content. Error details stay in
+  server-side logs while visitors receive a generic message.
+
