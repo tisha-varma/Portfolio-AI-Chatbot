@@ -10,7 +10,7 @@ from collections.abc import AsyncGenerator
 from contextlib import suppress
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
 from app.config import Settings, get_settings
@@ -75,14 +75,24 @@ def _error_event(code: str, message: str) -> str:
     return f"event: error\ndata: {payload}\n\n"
 
 
+def _log_extra(request_id: str, error_type: str) -> dict[str, str]:
+    """Build content-free metadata for a chat error log."""
+    return {
+        "request_id": request_id,
+        "route": "/api/chat",
+        "error_type": error_type,
+    }
+
+
 @router.post("/chat")
 async def chat(
     request: ChatRequest,
+    http_request: Request,
     settings: Settings = Depends(get_settings),
     llm: LLMClient = Depends(get_llm_client),
 ) -> StreamingResponse:
     """Stream an answer about Tisha as server-sent events."""
-    request_id = uuid.uuid4().hex
+    request_id = getattr(http_request.state, "request_id", None) or uuid.uuid4().hex
     try:
         enforce_message_limits(request.messages, settings.max_message_chars)
     except MessageLengthError as exc:
@@ -139,32 +149,60 @@ async def _event_stream(
             await queue.put(("done", None))
         except StreamInterrupted:
             logger.warning(
-                "Chat stream interrupted request_id=%s", request_id
+                "Chat stream interrupted",
+                extra=_log_extra(request_id, "StreamInterrupted"),
             )
             await queue.put(
-                ("error", ("interrupted", _friendly_message("interrupted", settings.contact_email)))
+                (
+                    "error",
+                    (
+                        "interrupted",
+                        _friendly_message("interrupted", settings.contact_email),
+                    ),
+                )
             )
         except LLMUnavailableError:
-            logger.warning("Chat LLM unavailable request_id=%s", request_id)
+            logger.warning(
+                "Chat LLM unavailable",
+                extra=_log_extra(request_id, "LLMUnavailableError"),
+            )
             await queue.put(
                 ("error", ("busy", _friendly_message("busy", settings.contact_email)))
             )
         except (KnowledgeRouterError, PromptBuildError):
-            logger.exception("Chat prompt preparation failed request_id=%s", request_id)
+            logger.exception(
+                "Chat prompt preparation failed",
+                extra=_log_extra(request_id, "PromptPreparationError"),
+            )
             await queue.put(
-                ("error", ("internal", _friendly_message("internal", settings.contact_email)))
+                (
+                    "error",
+                    ("internal", _friendly_message("internal", settings.contact_email)),
+                )
             )
         except LLMError:
-            logger.exception("Chat LLM request failed request_id=%s", request_id)
+            logger.exception(
+                "Chat LLM request failed",
+                extra=_log_extra(request_id, "LLMError"),
+            )
             await queue.put(
-                ("error", ("internal", _friendly_message("internal", settings.contact_email)))
+                (
+                    "error",
+                    ("internal", _friendly_message("internal", settings.contact_email)),
+                )
             )
         except asyncio.CancelledError:
             raise
         except Exception:  # noqa: BLE001 - never expose internals to visitors
-            logger.exception("Unexpected chat failure request_id=%s", request_id)
+            logger.exception(
+                "Unexpected chat failure",
+                extra=_log_extra(request_id, "UnexpectedError"),
+            )
             await queue.put(
-                ("error", ("internal", _friendly_message("internal", settings.contact_email)))
+                (
+                    "error",
+                    ("internal", _friendly_message("internal", settings.contact_email)),
+                )
             )
 
     producer = asyncio.create_task(produce())
