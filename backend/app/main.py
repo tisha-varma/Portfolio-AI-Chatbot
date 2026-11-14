@@ -1,112 +1,98 @@
-"""Minimal FastAPI app exposing the chat endpoint.
-
-The endpoint routes the conversation to the relevant deep dives, builds the
-system prompt, and sends everything to the configured Groq model.
-"""
+"""FastAPI application factory, health checks, and route registration."""
 
 from __future__ import annotations
 
 import logging
-from typing import Any, Literal
+import os
 
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-from app.config import Settings, get_settings
-from app.knowledge_router import KnowledgeRouterError, select_sections
-from app.prompt_builder import PromptBuildError, build_system_prompt
+from app.config import DEFAULT_ALLOWED_ORIGINS, Settings, get_settings
+from app.knowledge_loader import load_core, load_sections_index
+from app.routes_chat import router as chat_router
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Portfolio AI Chatbot", version="0.1.0")
+
+def get_optional_settings() -> Settings | None:
+    """Return settings when available, or None so /ready can report not-ready."""
+    try:
+        return get_settings()
+    except RuntimeError:
+        logger.warning("Configuration is incomplete; readiness will fail.")
+        return None
 
 
-class ChatMessage(BaseModel):
-    """One message in the conversation."""
+def _cors_origins(settings: Settings | None) -> list[str]:
+    """Return configured origins, never a wildcard."""
+    if settings is not None:
+        candidates = settings.allowed_origins_list
+    else:
+        raw = os.environ.get("ALLOWED_ORIGINS", DEFAULT_ALLOWED_ORIGINS)
+        candidates = [item.strip() for item in raw.split(",") if item.strip()]
 
-    role: Literal["user", "assistant"]
-    content: str = Field(min_length=1)
-
-
-class ChatRequest(BaseModel):
-    """A conversation to answer."""
-
-    messages: list[ChatMessage] = Field(min_length=1)
-
-
-class ChatResponse(BaseModel):
-    """The assistant's reply and the deep dives that were loaded."""
-
-    reply: str
-    sections: list[str]
+    origins = [origin for origin in candidates if origin and origin != "*"]
+    if len(origins) != len(candidates):
+        logger.warning("Ignoring a wildcard CORS origin; explicit origins are required.")
+    return origins
 
 
-def _get_client(settings: Settings) -> Any:
-    """Create the Groq client lazily so importing this module needs no key."""
-    from groq import Groq
+def create_app(settings: Settings | None = None) -> FastAPI:
+    """Build the FastAPI app, optionally bound to explicit settings."""
+    resolved_settings = settings if settings is not None else get_optional_settings()
+    application = FastAPI(title="Portfolio AI Chatbot", version="0.2.0")
 
-    return Groq(api_key=settings.groq_api_keys[0].get_secret_value())
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cors_origins(resolved_settings),
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Accept", "Content-Type", "X-Request-ID"],
+        expose_headers=["X-Request-ID"],
+        max_age=600,
+    )
 
+    application.include_router(chat_router)
 
-@app.get("/health")
-def health() -> dict[str, str]:
-    """Return a simple liveness response."""
-    return {"status": "ok"}
+    @application.get("/health")
+    def health() -> dict[str, str]:
+        """Return a simple liveness response that needs no configuration."""
+        return {"status": "ok"}
 
-
-@app.post("/chat", response_model=ChatResponse)
-def chat(request: ChatRequest) -> ChatResponse:
-    """Answer a visitor's question about Tisha."""
-    settings = get_settings()
-
-    for message in request.messages:
-        if len(message.content) > settings.max_message_chars:
-            raise HTTPException(
-                status_code=413,
-                detail=(
-                    "Each message must be at most "
-                    f"{settings.max_message_chars} characters."
-                ),
+    @application.get("/ready")
+    def ready(
+        resolved: Settings | None = Depends(get_optional_settings),
+    ) -> JSONResponse:
+        """Confirm configuration and knowledge load without calling Groq."""
+        if resolved is None or not resolved.groq_api_keys:
+            return JSONResponse(
+                status_code=503,
+                content={"status": "not_ready", "reason": "configuration"},
             )
 
-    messages = [message.model_dump() for message in request.messages]
+        knowledge = resolved.knowledge_dir
+        try:
+            load_core(
+                knowledge / "core.json",
+                environment=resolved.environment,
+            )
+            load_sections_index(knowledge / "sections" / "index.json")
+        except Exception:  # noqa: BLE001 - readiness must report, never crash
+            logger.exception("Readiness knowledge check failed")
+            return JSONResponse(
+                status_code=503,
+                content={"status": "not_ready", "reason": "knowledge"},
+            )
 
-    try:
-        section_ids = select_sections(messages)
-    except KnowledgeRouterError as exc:
-        logger.exception("Section routing failed")
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+        return JSONResponse(status_code=200, content={"status": "ready"})
 
-    try:
-        system_prompt = build_system_prompt(section_ids)
-    except PromptBuildError as exc:
-        logger.exception("System prompt build failed")
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    if settings is not None:
+        application.dependency_overrides[get_settings] = lambda: settings
+        application.dependency_overrides[get_optional_settings] = lambda: settings
 
-    groq_messages = [
-        {"role": "system", "content": system_prompt},
-        *messages,
-    ]
+    return application
 
-    try:
-        completion = _get_client(settings).chat.completions.create(
-            model=settings.groq_model,
-            messages=groq_messages,
-            temperature=0.2,
-        )
-    except Exception as exc:  # noqa: BLE001 - upstream SDK errors vary
-        logger.exception("Groq request failed")
-        raise HTTPException(
-            status_code=502,
-            detail="The language model is unavailable right now.",
-        ) from exc
 
-    choices = getattr(completion, "choices", None)
-    if not choices:
-        raise HTTPException(status_code=502, detail="The language model returned no reply.")
-
-    reply = choices[0].message.content
-    if not reply:
-        raise HTTPException(status_code=502, detail="The language model returned an empty reply.")
-
-    return ChatResponse(reply=reply, sections=section_ids)
+app = create_app()
