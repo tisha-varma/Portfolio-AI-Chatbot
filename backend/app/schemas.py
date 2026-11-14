@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 import unicodedata
 from collections.abc import Mapping, Sequence
 from typing import Any, Literal
@@ -11,15 +10,22 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 MAX_JD_SUMMARY_CHARS = 1500
 
-# Control characters are removed, but newlines and tabs are useful in chat.
-_CONTROL_CHARACTERS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]")
-
 
 def clean_text(value: str) -> str:
-    """Normalise Unicode, remove control characters, and trim whitespace."""
+    """Normalise Unicode and remove control and zero-width characters.
+
+    Newlines and tabs are kept because chat messages may be multi-line.
+    """
     normalised = unicodedata.normalize("NFC", value)
-    without_controls = _CONTROL_CHARACTERS.sub("", normalised)
-    return without_controls.strip()
+    kept: list[str] = []
+    for character in normalised:
+        if character in "\n\t":
+            kept.append(character)
+            continue
+        if unicodedata.category(character) in {"Cc", "Cf"}:
+            continue
+        kept.append(character)
+    return "".join(kept).strip()
 
 
 class ChatMessage(BaseModel):
